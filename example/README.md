@@ -8,17 +8,17 @@ Addon name is the name of the folder containing it. In this case addon name is `
 
 ## Required files
 
-Each addon should have a main script that is named after the addon. In this case the script name should be named `example` and it should be placed in this folder. An addon will fail to install without the main script.
+Each addon should have a main script that is named as the addon. In this case the main script name is `example`. It should be located in this directory.
 
 ## Optional files
 
-If there is a need to include more files or use hooks, then these files should be described in `addon_name.filelist` one file per line. 
+If there is a need to include more files, then these files should be described in `addon.filelist` one file per line. 
 
 See contents of `example.filelist` for details.
 
 ### Hooks
 
-Hooks scripts should be named as `addon_name.hook_name` and described in `addon_name.filelist`. These scripts are executed automatically upon certain events.
+Hooks are special additional files that executed automatically upon certain events. Hook files should be named as `addon`.`hook` and described in `addon.filelist`.
 
 Supported hooks:
 
@@ -26,3 +26,5 @@ Supported hooks:
 - `post-install` executed after installation
 - `pre-uninstall` executed before uninstallation, can cancel uninstallation if returns non-zero exit code
 - `post-uninstall` executed after uninstallation
+
+Examples of all these hooks can be found here.
