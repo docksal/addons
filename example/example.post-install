@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Post-install script to perform desired tasks after installation..."
+sleep 1

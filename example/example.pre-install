@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Pre-install script"
+sleep 1
+ehco "Check for dependencies or pre-requisites..."
+sleep 2
+echo "If exit code if non-zero the installation will not continue."
+sleep 2

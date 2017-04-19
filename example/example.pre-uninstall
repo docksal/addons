@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Pre-uninstall to ask for additional confirmation or warn about outcome..."
+sleep 2

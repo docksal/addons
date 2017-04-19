@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Post-uninstall script to perform a cleanup..."
+sleep 2
