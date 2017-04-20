@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+## Generate uli
+
+uli=$(fin drush uli 2>&1 | sed "s/default/$VIRTUAL_HOST/")
+echo "$uli"
+
+[[ "$uli" == "Error"* ]] && exit 1
+
+# Copy to clipboard on mac
+
+( which pbcopy >/dev/null 2>&1 ) &&
+	echo "$uli" | pbcopy &&
+	echo "[+] Copied to clipboard"
