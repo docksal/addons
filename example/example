@@ -10,13 +10,16 @@ VERSION="1.0"
 ##   fin example <command>
 ##
 ## Usage:
-##   hello      Displays contents of 'somefile'
-##   version    Display addon version. Every addon has this command automatically
+##   hello       Display contents of 'somefile'
+##   version     Display addon version
 
 
 case "$1" in
 	hello)
 		cat "$ADDON_ROOT/some-additional-files/somefile"
+		;;
+	version|-v)
+		echo "$VERSION"
 		;;
 	*)
 		fin help example
