@@ -1,5 +1,6 @@
 #!/bin/bash
 
-echo "  This is a post-install script output."
-echo "  Use it to perform additional tasks after addon installation."
+echo "  This is an example post-install script output."
+echo "  Use post-install hook to perform additional tasks after addon installation,"
+echo "  that can not be performed before addon installation."
 sleep 1
