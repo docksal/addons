@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Pre-install script"
+echo "  This is an example pre-install script output..."
 sleep 1
-ehco "Check for dependencies or pre-requisites..."
+echo "  Use pre-install shook to check for dependencies or pre-requisites..."
 sleep 2
-echo "If exit code if non-zero the installation will not continue."
+echo "  If exit code is non-zero, then addon installation will not continue."
 sleep 2

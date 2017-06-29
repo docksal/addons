@@ -1,4 +1,7 @@
 #!/bin/bash
 
-echo "Pre-uninstall to ask for additional confirmation or warn about outcome..."
+echo "  This is an example pre-uninstall hook output" 
+echo "  Use this hook to ask for additional confirmations or to warn about outcome..."
 sleep 2
+echo "  If exit code will be non-zero then uninstallation will not happen..."
+sleep 1

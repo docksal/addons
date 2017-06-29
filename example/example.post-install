@@ -1,4 +1,5 @@
 #!/bin/bash
 
-echo "Post-install script to perform desired tasks after installation..."
+echo "  This is a post-install script output."
+echo "  Use it to perform additional tasks after addon installation."
 sleep 1

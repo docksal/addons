@@ -8,7 +8,7 @@ Addon name is the name of the folder containing it. In this case addon name is `
 
 ## Required files
 
-Each addon should have a main script that is named as the addon. In this case the main script name is `example`. It should be located in this directory.
+Each addon should have a main script that is named as the addon. In this case the main script name is `example`. It should be located in the addon root directory.
 
 ## Optional files
 

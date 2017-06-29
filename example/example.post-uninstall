@@ -1,4 +1,5 @@
 #!/bin/bash
 
-echo "Post-uninstall script to perform a cleanup..."
+echo "  This is an example post-uninstall script to perform a cleanup..."
+echo "  Addon code is gone by this moment."
 sleep 2
