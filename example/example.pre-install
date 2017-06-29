@@ -6,3 +6,4 @@ echo "  Use pre-install shook to check for dependencies or pre-requisites..."
 sleep 2
 echo "  If exit code is non-zero, then addon installation will not continue."
 sleep 2
+exit 0
