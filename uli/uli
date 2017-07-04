@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
+die ()
+{
+	echo "$1"
+	exit 1
+}
+
 ## Generate uli
 
-uli=$(fin drush uli 2>&1 | sed "s/default/$VIRTUAL_HOST/")
+cd "$PROJECT_ROOT/$DOCROOT" || die "Could not change dir to $PROJECT_ROOT/$DOCROOT"
+uli=$(fin drush uli 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
 echo "$uli"
-
-[[ "$uli" == "Error"* ]] && exit 1
-
-# Copy to clipboard on mac
+[[ "$uli" == *"Error"* ]] && exit 1
 
 ( which pbcopy >/dev/null 2>&1 ) &&
 	echo "$uli" | pbcopy &&
