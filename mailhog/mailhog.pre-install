@@ -2,32 +2,32 @@
 
 # Check Docksal running
 if [[ "$DOCKER_RUNNING" != "true" ]]; then
-	echo "ERROR: Docksal and project should be running"
+	echo "  [PRE-INSTALL] ERROR: Docksal and project should be running"
 	exit 1
 fi
 
 # Check project running
 if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
-	echo "ERROR: project should be running"
+	echo "  [PRE-INSTALL] ERROR: Start the project with fin start first"
 	exit 1
 fi
 
 # Get fin config
 fin_config=$(fin config)
 if [[ $? != 0 ]]; then
-	echo "ERROR: 'fin config' command was not successful. Check your fin config"
+	echo "  [PRE-INSTALL] ERROR: 'fin config' command was not successful. Check your fin config"
 	exit 1
 fi
 
 # Check there is no mailhog already
 if (echo "$fin_config" | grep "image: mailhog\/mailhog"); then
-	echo "ERROR: mailhog seems to be already enabled for this project"
+	echo "  [PRE-INSTALL] ERROR: Mailhog seems to be already enabled for this project"
 	exit 1
 fi
 
 # Check there is no mailhog already
 if (echo "$fin_config" | grep "  mail:"); then
-	echo "ERROR: container named 'mail' already exists. Remove it to continue."
+	echo "  [PRE-INSTALL] ERROR: Container named 'mail' already exists. Remove it to continue."
 	exit 1
 fi
 
