@@ -3,8 +3,8 @@
 # CONFIG RELATED VARS
 DOCKSAL_ENV=".docksal/docksal.env"
 DOCKSAL_YML=".docksal/docksal.yml"
-CONF_VERSION=$(head "$HOME/.docksal/stacks/volumes-bind.yml" | grep version)"\n\n"
-CONF_BASE="services:\n"
+CONF_VERSION=$(head "$HOME/.docksal/stacks/volumes-bind.yml" | grep version)"\n"
+CONF_BASE="services:"
 
 # Console colors
 red='\033[0;31m'
@@ -43,8 +43,8 @@ fi
 
 # Create docksal.yml if not present
 [[ ! -f "$DOCKSAL_YML" ]] &&
-	( echo -e "$CONF_VERSION" | tee -a "$DOCKSAL_YML" ) &&
-	( echo -e "$CONF_BASE" | tee -a "$DOCKSAL_YML" )
+	( echo -e "$CONF_VERSION" | tee -a "$DOCKSAL_YML" >/dev/null ) &&
+	( echo -e "$CONF_BASE" | tee -a "$DOCKSAL_YML" >/dev/null )
 
 # ENABLE MAILHOG
 fin mailhog enable
