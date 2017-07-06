@@ -17,20 +17,6 @@ echo-green () { echo -e "${green}$1${NC}"; }
 
 DOCKSAL_YML=".docksal/docksal.yml"
 
-
-case "$1" in
-	enable)
-		enable_mailhog
-		;;
-	disable)
-		disable_mailhog
-		;;
-	*)
-		echo "Usage: fin mailhog < enable | disable >"
-		exit 1
-		;;
-esac
-
 # Set proper setting into php.ini
 # $1 - enable/disable
 _configure_php_ini ()
@@ -105,3 +91,17 @@ disable_mailhog ()
 	fin up
 }
 
+#--- Begin Runtime ----#
+
+case "$1" in
+	enable)
+		enable_mailhog
+		;;
+	disable)
+		disable_mailhog
+		;;
+	*)
+		echo "Usage: fin mailhog < enable | disable >"
+		exit 1
+		;;
+esac

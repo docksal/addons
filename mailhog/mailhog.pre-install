@@ -7,7 +7,7 @@ if [[ "$DOCKER_RUNNING" != "true" ]]; then
 fi
 
 # Check project running
-if ! (fin ps | grep "_cli_" | grep "Up"); then
+if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
 	echo "ERROR: project should be running"
 	exit 1
 fi
