@@ -16,6 +16,7 @@ echo-red () { echo -e "${red}$1${NC}"; }
 echo-green () { echo -e "${green}$1${NC}"; }
 
 DOCKSAL_YML=".docksal/docksal.yml"
+DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
 
 # Set proper setting into php.ini
 # $1 - enable/disable
@@ -72,6 +73,11 @@ disable_mailhog ()
 	echo "  Disabling mailhog..."
 	cd "$PROJECT_ROOT"
 
+	if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
+		echo "[PRE-UNINSTALL] ERROR: Start the project with fin start first"
+		exit 1
+	fi
+
 	#-- Install yaml-cli
 	echo "Installing yaml-cli"
 	fin exec "npm install -g yaml-cli >/dev/null"
@@ -83,7 +89,8 @@ disable_mailhog ()
 
 	# Remove mail service
 	echo "  Removing settings"
-	fin exec "yaml set $DOCKSAL_YML services.mail | grep -v 'mail:' | tee $DOCKSAL_YML >/dev/null"
+	fin exec "yaml set $DOCKSAL_YML services.mail | grep -v 'mail:' | tee $DOCKSAL_YML_NEW >/dev/null"
+	fin exec mv "$DOCKSAL_YML_NEW" "$DOCKSAL_YML"
 
 	# Remove php.ini setting
 	_configure_php_ini disable
