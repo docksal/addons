@@ -30,9 +30,12 @@ echo-yellow () { echo -e "${yellow}$1${NC}"; }
 # cd to project root
 cd "$PROJECT_ROOT" || die "ERROR: Could not cd to project root"
 
-#-- Determine and prepare project configuration
+
 echo "  Determining and preparing project configuration"
+
+# Source env
 source "$DOCKSAL_ENV" >/dev/null 2>&1
+
 # If DOCKSAL_STACK is not set and there is no docksal.yml then it's a zero configuration setup.
 # Export default stack manually to be able to use docksal.yml to append/override stack config
 # In all other cases we can already use docksal.yml
@@ -41,10 +44,11 @@ if [[ "$DOCKSAL_STACK" == "" ]] && [[ ! -f "$DOCKSAL_YML" ]]; then
 	echo -e "\nDOCKSAL_STACK=\"default\"" | tee -a "$DOCKSAL_ENV" >/dev/null
 fi
 
-# Create docksal.yml if not present
-[[ ! -f "$DOCKSAL_YML" ]] &&
+# Create docksal.yml if not present or empty
+if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep services); then
 	( echo -e "$CONF_VERSION" | tee -a "$DOCKSAL_YML" >/dev/null ) &&
 	( echo -e "$CONF_BASE" | tee -a "$DOCKSAL_YML" >/dev/null )
+fi
 
 # ENABLE MAILHOG
 fin mailhog enable
