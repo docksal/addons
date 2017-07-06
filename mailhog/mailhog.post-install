@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# CONFIG RELATED VARS
-DOCKSAL_ENV=".docksal/docksal.env"
-DOCKSAL_YML=".docksal/docksal.yml"
-CONF_VERSION=$(head "$HOME/.docksal/stacks/volumes-bind.yml" | grep version)"\n"
-CONF_BASE="services:"
-
 # Console colors
 red='\033[0;31m'
 green='\033[0;32m'
@@ -25,30 +19,42 @@ echo-green () { echo -e "${green}$1${NC}"; }
 echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
 echo-yellow () { echo -e "${yellow}$1${NC}"; }
 
+# Check that vital config exists and sets DOCKSAL_STACK if needed
+check_or_init_config ()
+{
+	DOCKSAL_ENV=".docksal/docksal.env"
+	DOCKSAL_YML=".docksal/docksal.yml"
+	CONF_VERSION=$(head "$HOME/.docksal/stacks/default.yml" | grep version)"\n"
+	CONF_BASE="services:"
+
+	# Source env
+	source "$DOCKSAL_ENV" >/dev/null 2>&1
+
+	# If DOCKSAL_STACK is not set and there is no docksal.yml then it's a zero configuration setup.
+	# Export default stack manually to be able to use docksal.yml to append/override stack config
+	# In all other cases we can already use docksal.yml
+	if [[ "$DOCKSAL_STACK" == "" ]]; then
+		if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep services); then
+			echo "  Configuring to use DOCKSAL_STACK=\"default\"..."
+			echo -e "\nDOCKSAL_STACK=\"default\"" | tee -a "$DOCKSAL_ENV" >/dev/null
+		fi
+	fi
+
+	# Create docksal.yml if not present or empty
+	if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep services); then
+		( echo -e "$CONF_VERSION" | tee -a "$DOCKSAL_YML" >/dev/null ) &&
+		( echo -e "$CONF_BASE" | tee -a "$DOCKSAL_YML" >/dev/null )
+	fi
+}
+
 # --- Begin Runtime --- #
 
 # cd to project root
 cd "$PROJECT_ROOT" || die "ERROR: Could not cd to project root"
 
-
+# Config
 echo "  Determining and preparing project configuration"
-
-# Source env
-source "$DOCKSAL_ENV" >/dev/null 2>&1
-
-# If DOCKSAL_STACK is not set and there is no docksal.yml then it's a zero configuration setup.
-# Export default stack manually to be able to use docksal.yml to append/override stack config
-# In all other cases we can already use docksal.yml
-if [[ "$DOCKSAL_STACK" == "" ]] && [[ ! -f "$DOCKSAL_YML" ]]; then
-	echo "  Configuring to use DOCKSAL_STACK=\"default\"..."
-	echo -e "\nDOCKSAL_STACK=\"default\"" | tee -a "$DOCKSAL_ENV" >/dev/null
-fi
-
-# Create docksal.yml if not present or empty
-if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep services); then
-	( echo -e "$CONF_VERSION" | tee -a "$DOCKSAL_YML" >/dev/null ) &&
-	( echo -e "$CONF_BASE" | tee -a "$DOCKSAL_YML" >/dev/null )
-fi
+check_or_init_config
 
 # ENABLE MAILHOG
 fin mailhog enable
