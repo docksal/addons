@@ -24,7 +24,7 @@ check_or_init_config ()
 {
 	DOCKSAL_ENV=".docksal/docksal.env"
 	DOCKSAL_YML=".docksal/docksal.yml"
-	CONF_VERSION=$(head "$HOME/.docksal/stacks/default.yml" | grep version)"\n"
+	CONF_VERSION=$(head "$HOME/.docksal/stacks/volumes-bind.yml" | grep version)"\n"
 	CONF_BASE="services:"
 
 	# Source env
