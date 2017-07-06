@@ -62,6 +62,7 @@ enable_mailhog ()
 	_configure_php_ini enable
 
 	# Apply stack changes
+	sleep 1
 	fin up
 }
 
