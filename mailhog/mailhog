@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+## Enable/disable mailhog for current project
+##
+## Sub-commands:
+##   enable		Enable mailhog
+##   disable	Disable mailhog
+
+red='\033[0;31m'
+green='\033[0;32m'
+green_bg='\033[42m'
+yellow='\033[1;33m'
+NC='\033[0m'
+
+echo-red () { echo -e "${red}$1${NC}"; }
+echo-green () { echo -e "${green}$1${NC}"; }
+
+DOCKSAL_YML=".docksal/docksal.yml"
+
+
+case "$1" in
+	enable)
+		enable_mailhog
+		;;
+	disable)
+		disable_mailhog
+		;;
+	*)
+		echo "Usage: fin mailhog < enable | disable >"
+		exit 1
+		;;
+esac
+
+# Set proper setting into php.ini
+# $1 - enable/disable
+_configure_php_ini ()
+{
+	local ini_path=".docksal/etc/php/php.ini"
+	cd "$PROJECT_ROOT"
+	case "$1" in
+		enable)
+			# Create file if not exists
+			mkdir -p $(dirname "$ini_path")
+			if [[ ! -f "$ini_path" ]]; then
+				echo -e "[php]\n\n" | tee "$ini_path"
+			fi
+			# Append sendmail setting
+			cat "$ADDON_ROOT/conf/mailhog.ini" | tee -a "$ini_path" >/dev/null
+			;;
+		disable)
+			ini_contents=$(cat "$ini_path")
+			# Remove all lines that present in mailhog.ini from php.ini
+			for str in $(cat "$ADDON_ROOT/conf/mailhog.ini"); do
+				ini_contents=${ini_contents/$str/}
+			done
+			echo -e "$ini_contents" | tee "$ini_path" >/dev/null
+			;;
+	esac
+}
+
+# Enable container and settings
+enable_mailhog ()
+{
+	echo "[mailhog] Enabling mailhog..."
+	cd "$PROJECT_ROOT"
+
+	if (fin config | grep "image: mailhog\/mailhog"); then
+		echo "[mailhog] Mailhog support is already enabled."
+		exit
+	fi
+
+	# Add to docksal.yml
+	cat "$ADDON_ROOT/conf/mailhog.yml" | tee -a "$DOCKSAL_YML" >/dev/null
+
+	# Add php.ini setting
+	_configure_php_ini enable
+
+	# Apply stack changes
+	fin up
+}
+
+# Disable container and settings
+disable_mailhog ()
+{
+	echo "[mailhog] Disabling mailhog..."
+	cd "$PROJECT_ROOT"
+
+	#-- Install yaml-cli
+	echo "Installing yaml-cli"
+	fin exec "npm install -g yaml-cli >/dev/null"
+
+	if ! (fin config | grep "image: mailhog\/mailhog"); then
+		echo "[mailhog] Mailhog support is not enabled at the moment."
+		exit
+	fi
+
+	# Remove mail service
+	echo "Removing settings"
+	fin exec "yaml set $DOCKSAL_YML services.mail | grep -v 'mail:' | tee $DOCKSAL_YML >/dev/null"
+
+	# Remove php.ini setting
+	_configure_php_ini disable
+
+	# Apply stack changes
+	fin up
+}
+

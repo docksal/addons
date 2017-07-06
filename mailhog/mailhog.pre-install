@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Check Docksal running
+if [[ "$DOCKER_RUNNING" != "true" ]]; then
+	echo "ERROR: Docksal and project should be running"
+	exit 1
+fi
+
+# Check project running
+if ! (fin ps | grep "_cli_" | grep "Up"); then
+	echo "ERROR: project should be running"
+	exit 1
+fi
+
+# Get fin config
+fin_config=$(fin config)
+if [[ $? != 0 ]]; then
+	echo "ERROR: 'fin config' command was not successful. Check your fin config"
+	exit 1
+fi
+
+# Check there is no mailhog already
+if (echo "$fin_config" | grep "image: mailhog\/mailhog"); then
+	echo "ERROR: mailhog seems to be already enabled for this project"
+	exit 1
+fi
+
+# Check there is no mailhog already
+if (echo "$fin_config" | grep "  mail:"); then
+	echo "ERROR: container named 'mail' already exists. Remove it to continue."
+	exit 1
+fi
+
+
+# All good
+exit 0
