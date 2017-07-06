@@ -28,7 +28,7 @@ _configure_php_ini ()
 			# Create file if not exists
 			mkdir -p $(dirname "$ini_path")
 			if [[ ! -f "$ini_path" ]]; then
-				echo -e "[php]\n\n" | tee "$ini_path"
+				echo -e "[php]\n" | tee "$ini_path" >/dev/null
 			fi
 			# Append sendmail setting
 			cat "$ADDON_ROOT/conf/mailhog.ini" | tee -a "$ini_path" >/dev/null
@@ -47,11 +47,11 @@ _configure_php_ini ()
 # Enable container and settings
 enable_mailhog ()
 {
-	echo "[mailhog] Enabling mailhog..."
+	echo "  Enabling mailhog..."
 	cd "$PROJECT_ROOT"
 
 	if (fin config | grep "image: mailhog\/mailhog"); then
-		echo "[mailhog] Mailhog support is already enabled."
+		echo "  Mailhog support is already enabled."
 		exit
 	fi
 
@@ -68,7 +68,7 @@ enable_mailhog ()
 # Disable container and settings
 disable_mailhog ()
 {
-	echo "[mailhog] Disabling mailhog..."
+	echo "  Disabling mailhog..."
 	cd "$PROJECT_ROOT"
 
 	#-- Install yaml-cli
@@ -76,12 +76,12 @@ disable_mailhog ()
 	fin exec "npm install -g yaml-cli >/dev/null"
 
 	if ! (fin config | grep "image: mailhog\/mailhog"); then
-		echo "[mailhog] Mailhog support is not enabled at the moment."
+		echo "  Mailhog support is not enabled at the moment."
 		exit
 	fi
 
 	# Remove mail service
-	echo "Removing settings"
+	echo "  Removing settings"
 	fin exec "yaml set $DOCKSAL_YML services.mail | grep -v 'mail:' | tee $DOCKSAL_YML >/dev/null"
 
 	# Remove php.ini setting
