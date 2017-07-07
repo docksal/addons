@@ -1,6 +1,10 @@
 # MailHog
 
-Easily install Mailhog support for your Docksal project
+Easily install Mailhog e-mail catcher for your Docksal project
+
+```bash
+fin addon install mailhog
+```
 
 ## Usage once installed
 
