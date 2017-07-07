@@ -14,107 +14,140 @@ NC='\033[0m'
 
 echo-red () { echo -e "${red}$1${NC}"; }
 echo-green () { echo -e "${green}$1${NC}"; }
+echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
+echo-yellow () { echo -e "${yellow}$1${NC}"; }
+die () { echo -e "$1"; exit 1 }
 
 DOCKSAL_YML=".docksal/docksal.yml"
 DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
+DOCKSAL_ENV=".docksal/docksal.env"
+DOCKSAL_STACKS="$HOME/.docksal/stacks"
+PHP_INI=".docksal/etc/php/php.ini"
+MAILHOG_INI="$ADDON_ROOT/conf/mailhog.ini"
+MAILHOG_YML="$ADDON_ROOT/conf/mailhog.yml"
 
-# Set proper setting into php.ini
-# $1 - enable/disable
-_configure_php_ini ()
+# Prepares stack to editing docksal.yml config
+yml_prepare ()
 {
-	local ini_path=".docksal/etc/php/php.ini"
-	cd "$PROJECT_ROOT"
+	# Get yml version to use for a new file from existing stacks
+	YML_VERSION=$(head "$DOCKSAL_STACKS/volumes-bind.yml" | grep "version")
+	YML_BODY="${YML_VERSION}\nservices:"
+	NEW_STACK='DOCKSAL_STACK="default"'
+
+	# Source docksal.env
+	source "$DOCKSAL_ENV" >/dev/null 2>&1
+
+	# If DOCKSAL_STACK is not set and there is no docksal.yml or invalid docksal.yml...
+	if [[ -z "$DOCKSAL_STACK" ]] && ! $(cat "$DOCKSAL_YML" 2>/dev/null | grep "services" >/dev/null); then
+		echo "  Configuring to use DOCKSAL_STACK=\"default\"..."
+		# Then set stack to default so we could use docksal.yml
+		echo -e "$NEW_STACK" >> "$DOCKSAL_ENV"
+		# Create docksal.yml
+		echo -e "$YML_BODY" >> "$DOCKSAL_YML"
+	fi
+}
+
+# Install tool required to edit yml from command line
+yml_install_tools ()
+{
+	fin exec "which yaml || npm install --silent -g yaml-cli"
+}
+
+# Removes a service from docksal.yml
+# $1 - service name
+yml_remove_service ()
+{
+	[[ -z "$1" ]] && return 1
+	local service="$1"
+	fin exec "yaml set $DOCKSAL_YML services.$service | grep -v '$service:' | tee $DOCKSAL_YML_NEW >/dev/null"
+	fin exec mv "$DOCKSAL_YML_NEW" "$DOCKSAL_YML"
+}
+
+# Set/remove proper setting into php.ini
+# $1 - enable/disable
+mailhog_php_support ()
+{
 	case "$1" in
 		enable)
 			# Create file if not exists
-			mkdir -p $(dirname "$ini_path")
-			if [[ ! -f "$ini_path" ]]; then
-				echo -e "[php]\n" | tee "$ini_path" >/dev/null
+			if [[ ! -f "$PHP_INI" ]]; then
+				mkdir -p $(dirname "$PHP_INI")
+				echo -e "[php]\n" >> "$PHP_INI"
 			fi
 			# Append sendmail setting
-			cat "$ADDON_ROOT/conf/mailhog.ini" | tee -a "$ini_path" >/dev/null
+			cat "$MAILHOG_INI" >> "$PHP_INI"
 			;;
 		disable)
-			ini_contents=$(cat "$ini_path")
+			ini_contents=$(cat "$PHP_INI")
 			# Remove all lines that present in mailhog.ini from php.ini
-			for str in $(cat "$ADDON_ROOT/conf/mailhog.ini"); do
+			# TODO: improve to remove all consequent matching lines only
+			for str in $(cat "$MAILHOG_INI"); do
 				ini_contents=${ini_contents/$str/}
 			done
-			echo -e "$ini_contents" | tee "$ini_path" >/dev/null
+			echo -e "$ini_contents" >> "$PHP_INI"
 			;;
 	esac
 }
 
 # Enable container and settings
-enable_mailhog ()
+mailhog_enable ()
 {
-	echo "  Enabling mailhog..."
-	cd "$PROJECT_ROOT"
-
+	# Double check yml is there
 	if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep "services" >/dev/null); then
-		echo "  ERROR: docksal.yml is invalid or not found"
-		exit
+		echo "  ERROR: docksal.yml is invalid or not found" && exit 1
 	fi
 
+	# Check that mailhog is not already enabled
 	if (fin config | grep "image: mailhog\/mailhog"); then
-		echo "  Mailhog support is already enabled."
-		exit
+		echo "  Mailhog support is already enabled." && exit
 	fi
 
-	# Add to docksal.yml
-	cat "$ADDON_ROOT/conf/mailhog.yml" >> "$DOCKSAL_YML"
-
+	echo "  Enabling mailhog..."
+	yml_prepare
+	# Add mailhog service to docksal.yml
+	cat "$MAILHOG_YML" >> "$DOCKSAL_YML"
 	# Add php.ini setting
-	_configure_php_ini enable
-
+	mailhog_php_support enable
 	# Apply stack changes
-	sleep 1
 	fin up
 }
 
 # Disable container and settings
-disable_mailhog ()
+mailhog_disable ()
 {
-	echo "  Disabling mailhog..."
-	cd "$PROJECT_ROOT"
-
+	# Make sure cli container is running
 	if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
-		echo "[PRE-UNINSTALL] ERROR: Start the project with fin start first"
-		exit 1
+		echo "[PRE-UNINSTALL] ERROR: Start the project with fin start first" && exit 1
 	fi
 
-	#-- Install yaml-cli
-	echo "Installing yaml-cli"
-	fin exec "npm install -g yaml-cli >/dev/null"
-
+	# Make sure mailhog is installed
 	if ! (fin config | grep "image: mailhog\/mailhog"); then
-		echo "  Mailhog support is not enabled at the moment."
-		exit
+		echo "  Mailhog support is not enabled at the moment." && exit
 	fi
 
-	# Remove mail service
-	echo "  Removing settings"
-	fin exec "yaml set $DOCKSAL_YML services.mail | grep -v 'mail:' | tee $DOCKSAL_YML_NEW >/dev/null"
-	fin exec mv "$DOCKSAL_YML_NEW" "$DOCKSAL_YML"
-
+	echo "  Preparing to remove mailhog..."
+	yml_install_tools
+	# Remove mailhog service from docksal.yml
+	yml_remove_service "mail"
 	# Remove php.ini setting
-	_configure_php_ini disable
-
+	mailhog_php_support disable
 	# Apply stack changes
 	fin up
 }
 
 #--- Begin Runtime ----#
 
+cd "$PROJECT_ROOT"
+
 case "$1" in
 	enable)
-		enable_mailhog
+		mailhog_enable
 		;;
 	disable)
-		disable_mailhog
+		mailhog_disable
 		;;
 	*)
-		echo "Usage: fin mailhog < enable | disable >"
+		echo "Usage: fin mailhog <enable|disable>"
 		exit 1
 		;;
 esac
