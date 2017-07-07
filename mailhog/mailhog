@@ -51,13 +51,18 @@ enable_mailhog ()
 	echo "  Enabling mailhog..."
 	cd "$PROJECT_ROOT"
 
+	if [[ ! -f "$DOCKSAL_YML" ]] || ! $(cat "$DOCKSAL_YML" | grep "services" >/dev/null); then
+		echo "  ERROR: docksal.yml is invalid or not found"
+		exit
+	fi
+
 	if (fin config | grep "image: mailhog\/mailhog"); then
 		echo "  Mailhog support is already enabled."
 		exit
 	fi
 
 	# Add to docksal.yml
-	cat "$ADDON_ROOT/conf/mailhog.yml" | tee -a "$DOCKSAL_YML" >/dev/null
+	cat "$ADDON_ROOT/conf/mailhog.yml" >> "$DOCKSAL_YML"
 
 	# Add php.ini setting
 	_configure_php_ini enable
