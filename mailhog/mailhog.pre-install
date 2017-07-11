@@ -6,6 +6,13 @@ if [[ "$DOCKER_RUNNING" != "true" ]]; then
 	exit 1
 fi
 
+# Check Docksal running
+if [[ "$ADDON_GLOBAL" == "true" ]]; then
+	echo "[PRE-INSTALL] ERROR: This addon should be installed on per project basis"
+	exit 1
+fi
+
+
 # Check project running
 if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
 	echo "[PRE-INSTALL] ERROR: Start the project with fin start first"
