@@ -103,17 +103,20 @@ mailhog_php_support ()
 			# Create file if not exists
 			if [[ ! -f "$PHP_INI" ]]; then
 				mkdir -p $(dirname "$PHP_INI")
-				echo -e "[php]\n" >> "$PHP_INI"
+				echo -e "[php]\n" > "$PHP_INI"
 			fi
 			# Append sendmail setting
 			cat "$MAILHOG_INI" >> "$PHP_INI"
+			# Remove double empty lines for clarity
+			cat -s "$PHP_INI" | tee "$PHP_INI" >/dev/null
 			;;
 		disable)
+			[[ ! -f "$PHP_INI" ]] && return
 			php_ini_contents=$(cat "$PHP_INI")
 			mailhog_ini_contents=$(cat "$MAILHOG_INI")
 			# Remove all lines that present in mailhog.ini from php.ini
 			php_ini_contents=${php_ini_contents/$mailhog_ini_contents/}
-			echo -e "$php_ini_contents" >> "$PHP_INI"
+			echo -e "$php_ini_contents" > "$PHP_INI"
 			;;
 	esac
 }
@@ -133,6 +136,7 @@ mailhog_enable ()
 	# Add php.ini setting
 	mailhog_php_support enable
 	# Apply stack changes.
+	fin stop cli
 	fin up
 }
 
@@ -157,6 +161,7 @@ mailhog_disable ()
 	# Remove php.ini setting
 	mailhog_php_support disable
 	# Apply stack changes
+	COMPOSE_FILE="" fin stop cli
 	fin up
 }
 
