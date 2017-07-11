@@ -154,7 +154,7 @@ mailhog_disable ()
 		echo "  Mailhog support is not enabled at the moment." && exit
 	fi
 
-	echo "  Preparing to remove mailhog..."
+	echo "  Preparing to remove mailhog service..."
 	yml_install_tools
 	# Remove mailhog service from docksal.yml
 	yml_remove_service "mail"
