@@ -1,0 +1,3 @@
+  solr:
+    hostname: solr
+    image: docksal/solr:1.0-solr4

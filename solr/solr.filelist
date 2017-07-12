@@ -1,0 +1,7 @@
+# Hooks
+solr.pre-install
+solr.post-install
+solr.pre-uninstall
+
+# Container config
+conf/solr.yml
