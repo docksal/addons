@@ -10,3 +10,7 @@ fin addon install solr
 
 - `fin solr disable` to disable
 - `fin solr enable` to re-enable
+
+## More documentation
+
+http://docs.docksal.io/en/master/tools/apache-solr
