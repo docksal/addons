@@ -8,7 +8,7 @@ fi
 
 # Check Docksal running
 if [[ "$ADDON_GLOBAL" == "true" ]]; then
-	echo "[PRE-INSTALL] ERROR: This addon should be installed on per project basis"
+	echo -e "[PRE-INSTALL] ERROR: Mailhog addon should not be installed globally"
 	exit 1
 fi
 
