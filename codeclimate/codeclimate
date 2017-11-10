@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+## Run CodeClimate against the project code
+##
+## Usage:
+##  fin codeclimate -  list of commands
+##  fin codeclimate --no-check-version analyze -f html > codeclimate.html - export HTML report into local directory
+
+docker run \
+  --interactive --tty --rm \
+  --env CODECLIMATE_CODE="$PROJECT_ROOT" \
+  --volume "$PROJECT_ROOT":/code \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  --volume /tmp/cc:/tmp/cc \
+  codeclimate/codeclimate $@
