@@ -10,6 +10,8 @@ The addon will invoke a codeclimate command reusing host docker socket. The code
 
 The addon should make it possible for teams to easily add codeclimate command into their docksal commands stack.
 
+## INstalling
+
 ```bash
 fin addon install codeclimate
 ```
