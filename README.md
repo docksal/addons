@@ -6,8 +6,8 @@ Required fin version is 1.7.0 or higher.
 
 |   Name	|  Description 	|  Requirements 	|
 |--- |--- |--- |
-|   [codeclimate](codeclimate) | CodeClimate code quality tool | |
+|   [codeclimate](codeclimate) | [CodeClimate](https://codeclimate.com/) code quality tool | |
 |   **[example](example)**	|  A working documentation on what is Docksal addon and how it works 	|  |
-|   [mailhog](mailhog) | Install [Mailhog](https://github.com/mailhog/MailHog) service for current project |  |
-|   [solr](solr) | Install [Solr](http://lucene.apache.org/solr/) service for current project |  |
+|   [mailhog](mailhog) | Install [Mailhog](https://github.com/mailhog/MailHog) e-mail capture service for current project |  |
+|   [solr](solr) | Install [Apache Solr](http://lucene.apache.org/solr/) search service for current project |  |
 |   [uli](uli) | Generate one time login url for current site | Drupal |
