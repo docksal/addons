@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Runs phpcs
+##
+## Usage: fin phpcs [params to passthrough]
+
+docker run -it --rm -v $(pwd):/app willhallonline/drupal-phpcs phpcs $1
