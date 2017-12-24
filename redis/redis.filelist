@@ -1,0 +1,7 @@
+# Hooks
+redis.pre-install
+redis.post-install
+redis.pre-uninstall
+
+# Container config
+conf/redis.yml
