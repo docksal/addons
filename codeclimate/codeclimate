@@ -6,8 +6,16 @@
 ##  fin codeclimate -  list of commands
 ##  fin codeclimate --no-check-version analyze -f html > codeclimate.html - export HTML report into local directory
 
+# Determine if tty is supported.
+if [[ "$(/usr/bin/tty || true)" != "not a tty" ]]
+then
+  TTY_OPT='--tty'
+else
+  TTY_OPT=''
+fi
+
 docker run \
-  --interactive --tty --rm \
+  --interactive $TTY_OPT --rm \
   --env CODECLIMATE_CODE="$PROJECT_ROOT" \
   --volume "$PROJECT_ROOT":/code \
   --volume /var/run/docker.sock:/var/run/docker.sock \
