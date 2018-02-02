@@ -1,3 +1,3 @@
 # SequelPro Connection
 
-Launches SequelPro with the connection information for your project.
+Launches [SequelPro](https://www.sequelpro.com) with the connection information for your project.
