@@ -8,7 +8,7 @@ fi
 
 # Check Docksal running
 if [[ "$ADDON_GLOBAL" == "true" ]]; then
-	echo -e "[PRE-INSTALL] ERROR: Mailhog addon should not be installed globally"
+	echo -e "[PRE-INSTALL] ERROR: PHPMyAdmin addon should not be installed globally"
 	exit 1
 fi
 
@@ -28,13 +28,13 @@ fi
 
 # Check there is no pma already
 if (echo "$fin_config" | grep "image: phpmyadmin\/phpmyadmin"); then
-	echo "[PRE-INSTALL] ERROR: Mailhog seems to be already enabled for this project"
+	echo "[PRE-INSTALL] ERROR: PHPMyAdmin seems to be already enabled for this project"
 	exit 1
 fi
 
 # Check there is no pma already
-if (echo "$fin_config" | grep "  mail:"); then
-	echo "[PRE-INSTALL] ERROR: Container named 'mail' already exists. Remove it to continue."
+if (echo "$fin_config" | grep "  pma:"); then
+	echo "[PRE-INSTALL] ERROR: Container named 'pma' already exists. Remove it to continue."
 	exit 1
 fi
 

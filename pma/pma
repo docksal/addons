@@ -22,9 +22,7 @@ DOCKSAL_YML=".docksal/docksal.yml"
 DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
 DOCKSAL_ENV=".docksal/docksal.env"
 DOCKSAL_STACKS="$HOME/.docksal/stacks"
-PHP_INI=".docksal/etc/php/php.ini"
-MAILHOG_INI="$ADDON_ROOT/conf/pma.ini"
-MAILHOG_YML="$ADDON_ROOT/conf/pma.yml"
+PMA_YML="$ADDON_ROOT/conf/pma.yml"
 
 #----------------------------------- YML & config functions ------------------------------------------
 
@@ -92,49 +90,22 @@ yml_remove_service ()
 	fin exec "$CODE_TO_EXEC"
 }
 
-#-------------------------------------- MailHog functions ---------------------------------------------
+#-------------------------------------- PMA functions ---------------------------------------------
 
 # Set/remove proper setting into php.ini
 # $1 - enable/disable
-pma_php_support ()
-{
-	case "$1" in
-		enable)
-			# Create file if not exists
-			if [[ ! -f "$PHP_INI" ]]; then
-				mkdir -p $(dirname "$PHP_INI")
-				echo -e "[php]\n" > "$PHP_INI"
-			fi
-			# Append sendmail setting
-			cat "$MAILHOG_INI" >> "$PHP_INI"
-			# Remove double empty lines for clarity
-			cat -s "$PHP_INI" | tee "$PHP_INI" >/dev/null
-			;;
-		disable)
-			[[ ! -f "$PHP_INI" ]] && return
-			php_ini_contents=$(cat "$PHP_INI")
-			pma_ini_contents=$(cat "$MAILHOG_INI")
-			# Remove all lines that present in pma.ini from php.ini
-			php_ini_contents=${php_ini_contents/$pma_ini_contents/}
-			echo -e "$php_ini_contents" > "$PHP_INI"
-			;;
-	esac
-}
-
 # Enable container and settings
 pma_enable ()
 {
 	# Check that pma is not already enabled
-	if (in_config "image: pma\/pma"); then
-		echo "  Mailhog support is already enabled." && exit
+	if (in_config "image: phpmyadmin\/phpmyadmin"); then
+		echo "  PHPMyAdmin support is already enabled." && exit
 	fi
 
 	echo "  Enabling pma..."
 	yml_prepare
 	# Add pma service to docksal.yml
-	yml_add_service "$MAILHOG_YML"
-	# Add php.ini setting
-	pma_php_support enable
+	yml_add_service "$PMA_YML"
 	# Apply stack changes.
 	fin stop cli
 	fin up
@@ -150,16 +121,14 @@ pma_disable ()
 	fi
 
 	# Make sure pma is installed
-	if ! in_config "image: pma\/pma"; then
-		echo "  Mailhog support is not enabled at the moment." && exit
+	if ! in_config "image: phpmyadmin\/phpmyadmin"; then
+		echo "  PHPMyAdmin support is not enabled at the moment." && exit
 	fi
 
 	echo "  Preparing to remove pma service..."
 	yml_install_tools
 	# Remove pma service from docksal.yml
-	yml_remove_service "mail"
-	# Remove php.ini setting
-	pma_php_support disable
+	yml_remove_service "pma"
 	# Apply stack changes
 	COMPOSE_FILE="" fin stop cli
 	fin up
