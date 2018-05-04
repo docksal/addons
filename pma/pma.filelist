@@ -1,0 +1,7 @@
+# Hooks
+pma.pre-install
+pma.post-install
+pma.pre-uninstall
+
+# Container config
+conf/pma.yml

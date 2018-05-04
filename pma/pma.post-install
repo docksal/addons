@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+fin pma enable
+
+echo -e "${green}PHPMyAdmin UI:${NC} http://pma.<project_name>.docksal"
