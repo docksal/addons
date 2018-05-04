@@ -2,4 +2,4 @@
 
 fin pma enable
 
-echo -e "${green}PHPMyAdmin UI:${NC} http://pma.<project_name>.docksal"
+echo -e "${green}PHPMyAdmin UI:${NC} http://pma.$VIRTUAL_HOST"
