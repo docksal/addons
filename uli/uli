@@ -9,7 +9,7 @@ die ()
 ## Generate uli
 
 cd "$PROJECT_ROOT/$DOCROOT" || die "Could not change dir to $PROJECT_ROOT/$DOCROOT"
-uli=$(fin drush uli 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
+uli=$(fin drush uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
 echo "$uli"
 [[ "$uli" == *"Error"* ]] && exit 1
 
