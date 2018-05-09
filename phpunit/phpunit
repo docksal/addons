@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
+DRUPAL_CORE_PATH="${DOCROOT_PATH}/core"
+
+run_tests() {
+    ${PROJECT_ROOT}/vendor/bin/phpunit -c ${DRUPAL_CORE_PATH} "$@"
+}
+
+if [ ! -e ${DRUPAL_CORE_PATH}/phpunit.xml ]; then
+    if [ -e "${PROJECT_ROOT}/.docksal/drupal/core/phpunit.xml" ]; then
+        echo "Copying ${PROJECT_ROOT}/.docksal/drupal/core/phpunit.xml to ${DRUPAL_CORE_PATH}/phpunit.xml"
+        cp "${PROJECT_ROOT}/.docksal/drupal/core/phpunit.xml" ${DRUPAL_CORE_PATH}/phpunit.xml
+        run_tests "$@"
+    else
+        echo "Copying phpunit.xml.dist to phpunit.xml."
+        echo "Please edit it's values as needed and re-run 'fin phpunit'."
+        cp ${DRUPAL_CORE_PATH}/phpunit.xml.dist ${DRUPAL_CORE_PATH}/phpunit.xml
+        exit 1;
+    fi
+else
+    run_tests "$@"
+fi
