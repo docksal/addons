@@ -1,0 +1,10 @@
+  # Adminer
+  adminer:
+    hostname: adminer
+    image: adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=db # db is the default database container
+      - ADMINER_PLUGINS=tables-filter tinymce # To load Adminer plugins
+      - ADMINER_DESIGN=price # To use a bundled Adminer design
+    labels:
+      - io.docksal.virtual-host=adminer.${VIRTUAL_HOST}
