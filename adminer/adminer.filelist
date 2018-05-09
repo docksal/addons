@@ -1,0 +1,10 @@
+# Hooks
+adminer.pre-install
+adminer.post-install
+adminer.pre-uninstall
+
+# Container config
+conf/adminer.yml
+
+# Adminer designs plugin config
+conf/designs.php

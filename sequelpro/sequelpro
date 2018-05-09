@@ -11,7 +11,7 @@ container_port=$(docker ps --all --filter 'label=com.docker.compose.service=db' 
 HOST=${VIRTUAL_HOST}
 DB=${MYSQL_DATABASE:-default}
 USER=${MYSQL_USER:-user}
-PASS=${MYSQL_PASS:-user}
+PASS=${MYSQL_PASSWORD:-user}
 NAME=${COMPOSE_PROJECT_NAME}
 
 PORT=${PORT:-$container_port}
