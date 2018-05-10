@@ -13,6 +13,12 @@ uli=$(fin drush uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/h
 echo "$uli"
 [[ "$uli" == *"Error"* ]] && exit 1
 
+# Mac OSX copy uli to clipboard with pbcopy
 ( which pbcopy >/dev/null 2>&1 ) &&
 	echo "$uli" | pbcopy &&
 	echo "[+] Copied to clipboard"
+
+# Linux copy uli to both the selection buffer and clipboard with xclip.
+( which xclip >/dev/null 2>&1 ) &&
+	echo "$uli" | xclip -i -sel c -f |xclip -i -sel p &&
+	echo "[+] Copied to clipboard and selection buffer"
