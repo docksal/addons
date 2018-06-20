@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+#: exec_target = cli
+
+## Creates a phpunit.xml file and runs PHPUnit tests in Drupal 8
+##
+## Usage: fin phpunit <args>
+##
+## This first ensures that a `core/phpunit.xml` file exists, either by copying a
+## stub from `.docksal/drupal/core/phpunit.xml` if that exists, or copying and
+## renaming `core/phpunit.xml.dist`.
+##
+## If `core/phpunit.xml` exists, the phpunit command with then be run, appending
+## any optional arguments such as the directory path (run `fin phpunit -h`) to
+## see a full list of options.
+
 DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
 DRUPAL_CORE_PATH="${DOCROOT_PATH}/core"
 
