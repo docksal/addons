@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#: exec_target = cli
+
 DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
 DRUPAL_CORE_PATH="${DOCROOT_PATH}/core"
 
