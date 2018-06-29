@@ -4,7 +4,7 @@ Required fin version is 1.7.0 or higher.
 
 Addons is a **community driven** project. If you have an addon idea, we will gladly welcome the new addon.
 
-DISCLAMER: since it is a community driven project it is not thoroughly tested. Addons may not always be up to date with the latest Docksal practices or might have bugs. Feel free to raise issues or pull requests to fix those bugs.
+DISCLAMER: since it is a community driven project it is only smoke-tested and code is only reviewed for vulnerabilities. Addons may not always be up to date with the latest Docksal practices or might have bugs. Feel free to raise issues or pull requests to fix those bugs.
 
 # Addons list
 
