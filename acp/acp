@@ -115,12 +115,12 @@ acp_disable ()
 {
 	echo "  Running checks..."
 	# Make sure cli container is running
-	if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
+	if ! (fin ps | grep "_acp_" | grep "Up" >/dev/null); then
 		echo "  ERROR: Start the project with fin start first" && exit 1
 	fi
 
 	# Make sure acp is installed
-	if ! in_config "image: docksal\/acp"; then
+	if ! in_config "image: andockci\/acp"; then
 		echo "  andock-ci pipeline is not enabled at the moment." && exit
 	fi
 
