@@ -16,6 +16,5 @@ fi
 
 # Execute the script.
 php $SCRIPT_FILE \
-  --php `which php` \
   --color \
   $@
