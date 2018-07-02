@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+#: exec_target = cli
+
+## Run automated tests with Simpletest.
+##
+## Usage: fin simpletest <args>
+
+cd "${PROJECT_ROOT}/${DOCROOT}"
+
+# Find the run-tests script.
+if [ -f "core/scripts/run-tests.sh" ]; then
+    SCRIPT_FILE="core/scripts/run-tests.sh"
+else
+    SCRIPT_FILE="scripts/run-tests.sh"
+fi
+
+# Execute the script.
+php $SCRIPT_FILE \
+  --php `which php` \
+  --color \
+  $@
