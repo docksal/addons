@@ -2,7 +2,7 @@
 
 #: exec_target = cli
 
-## Run automated tests with Simpletest.
+## Run automated tests with SimpleTest.
 ##
 ## Usage: fin simpletest <args>
 

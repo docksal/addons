@@ -1,6 +1,6 @@
 # SimpleTest
 
-Easily run Simpletest tests for your Drupal 7 or 8 project.
+Easily run SimpleTest tests for your Drupal 7 or 8 project.
 
 ```bash
 fin addon install simpletest
