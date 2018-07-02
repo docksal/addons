@@ -2,7 +2,7 @@
   # andock-ci pipeline
   acp:
     hostname: acp
-    image: andockci/acp:dev-latest
+    image: andockci/acp:0.3.6
     volumes:
       - project_root:/var/www:rw,nocopy  # Project root volume
       - docksal_ssh_agent:/.ssh-agent:ro
