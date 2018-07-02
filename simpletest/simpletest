@@ -6,13 +6,11 @@
 ##
 ## Usage: fin simpletest <args>
 
-cd "${PROJECT_ROOT}/${DOCROOT}"
-
 # Find the run-tests script.
 if [ -f "core/scripts/run-tests.sh" ]; then
-    SCRIPT_FILE="core/scripts/run-tests.sh"
+    SCRIPT_FILE="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
 else
-    SCRIPT_FILE="scripts/run-tests.sh"
+    SCRIPT_FILE="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
 fi
 
 # Execute the script.
