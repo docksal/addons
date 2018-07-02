@@ -1,0 +1,7 @@
+# Hooks
+acp.pre-install
+acp.post-install
+acp.pre-uninstall
+
+# Container config
+conf/acp.yml

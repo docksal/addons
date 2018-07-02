@@ -1,0 +1,5 @@
+
+  # andock-ci pipeline
+  acp:
+    hostname: acp
+    image: andockci/acp:dev-latest
