@@ -3,3 +3,6 @@
   acp:
     hostname: acp
     image: andockci/acp:dev-latest
+    volumes:
+      - project_root:/var/www:rw,nocopy  # Project root volume
+
