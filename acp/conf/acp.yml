@@ -5,4 +5,4 @@
     image: andockci/acp:dev-latest
     volumes:
       - project_root:/var/www:rw,nocopy  # Project root volume
-
+      - docksal_ssh_agent:/.ssh-agent:ro
