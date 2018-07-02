@@ -6,7 +6,8 @@
 ##
 ## Usage: fin simpletest <args>
 
-# Find the run-tests script.
+# Determine the correct path for the run-tests.sh script. This will depend on
+# the version of Drupal.
 if [ -f "core/scripts/run-tests.sh" ]; then
     SCRIPT_FILE="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
 else
