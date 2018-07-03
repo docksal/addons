@@ -4,7 +4,7 @@
 
 ## Run automated tests with SimpleTest
 ##
-## Usage: fin simpletest [options]
+## Usage: fin simpletest [arguments]
 
 DRUPAL8_PATH="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
 DRUPAL7_PATH="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
