@@ -2,19 +2,21 @@
 
 #: exec_target = cli
 
-## Run automated tests with SimpleTest.
+## Run automated tests with SimpleTest
 ##
-## Usage: fin simpletest <args>
+## Usage: fin simpletest [options]
 
-# Determine the correct path for the run-tests.sh script. This will depend on
-# the version of Drupal.
-if [ -f "core/scripts/run-tests.sh" ]; then
-    SCRIPT_FILE="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
+DRUPAL8_PATH="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
+DRUPAL7_PATH="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
+
+if [[ -f "$DRUPAL8_PATH" ]]; then
+	SCRIPT_FILE="$DRUPAL8_PATH"
+elif [[ -f "$DRUPAL7_PATH" ]]; then
+	SCRIPT_FILE="$DRUPAL7_PATH"
 else
-    SCRIPT_FILE="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
+	echo "ERROR: could not find run-tests.sh"
+	exit 1
 fi
 
 # Execute the script.
-php $SCRIPT_FILE \
-  --color \
-  $@
+php "$SCRIPT_FILE" --color "$@"
