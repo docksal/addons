@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+#: exec_target = cli
+
+## Run automated tests with SimpleTest
+##
+## Usage: fin simpletest [arguments]
+
+DRUPAL8_PATH="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
+DRUPAL7_PATH="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
+
+if [[ -f "$DRUPAL8_PATH" ]]; then
+	SCRIPT_FILE="$DRUPAL8_PATH"
+elif [[ -f "$DRUPAL7_PATH" ]]; then
+	SCRIPT_FILE="$DRUPAL7_PATH"
+else
+	echo "ERROR: could not find run-tests.sh"
+	exit 1
+fi
+
+# Execute the script.
+php "$SCRIPT_FILE" --color "$@"
