@@ -6,7 +6,7 @@ die ()
 	exit 1
 }
 
-## Generate uli
+## Generate one time user login link. Add -s to use https in url.
 
 cd "$PROJECT_ROOT/$DOCROOT" || die "Could not change dir to $PROJECT_ROOT/$DOCROOT"
 
