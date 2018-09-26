@@ -14,4 +14,4 @@ fin uli -s @drushsitealias [ drush uli options ]
 * Drush site alias - useful for Drupal multi-site installations
 * Drush uli options are passed in. See [Drush user:login documentation](https://drushcommands.com/drush-9x/user/user:login/) for possible options.
 
-Note: the `-s` option and Drush site alias must be one of the first two given on the command line.
+Note: the `-s` option and Drush site alias must be one of the first two given on the command line. Both are optional.
