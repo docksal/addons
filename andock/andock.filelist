@@ -1,0 +1,7 @@
+# Hooks
+andock.pre-install
+andock.post-install
+andock.pre-uninstall
+
+# Container config
+conf/andock.yml
