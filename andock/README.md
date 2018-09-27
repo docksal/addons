@@ -29,8 +29,7 @@ fin addon install andock
 - `fin andock enable` to re-enable
 
 ## Getting started:
-* [New to andock. Get the Big picture](https://andock.readthedocs.io/en/latest/big-picture/)
-* [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/)
+* [New to andock. Get the Big picture](https://andock.readthedocs.io/en/latest/big-picture/introduction/)
+* [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
 * [andock command line tool](https://github.com/andock/andock/)
-
 
