@@ -6,10 +6,35 @@ die ()
 	exit 1
 }
 
-## Generate uli
+## Generate one time user login link. Add -s to use https in url.
+## Usage fin uli @drushalias -s
+## The drush alias and -s flags are optional.
 
 cd "$PROJECT_ROOT/$DOCROOT" || die "Could not change dir to $PROJECT_ROOT/$DOCROOT"
-uli=$(fin drush uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
+
+https=0 # Default to not use https
+
+# Check the first two options / arguments given on the the command line for
+# what looks like a Drush site alias or the -s option to use https in the url.
+count=2
+while [ $count -ne 0 ]; do
+        if [[ $1 == @* ]]; then
+            drushalias=$1
+            shift 1
+        elif [[ $1 == "-s" ]]; then
+            https=1
+            shift 1
+        fi
+        count=$[$count-1]
+done
+
+if [ $https -eq 0 ]; then
+        uli=$(fin drush $drushalias uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/")
+elif [ $https -eq 1 ]; then
+        uli=$(fin drush $drushalias uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
+else
+        exit 2
+fi
 echo "$uli"
 [[ "$uli" == *"Error"* ]] && exit 1
 
