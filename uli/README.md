@@ -7,7 +7,7 @@
 ## Usage
 
 ```
-fin uli -s @drushsitealias [ drush uli options ]
+fin uli [-s] [@drushsitealias] [ drush uli options ]
 ```
 
 * `-s` outputs the login url with https instead of default of https
