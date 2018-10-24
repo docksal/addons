@@ -33,7 +33,7 @@ if [ $https -eq 0 ]; then
 elif [ $https -eq 1 ]; then
         uli=$(fin drush $drushalias uli "$@" 2>&1 | sed "s/default/$VIRTUAL_HOST/" | sed "s/http\:/https:/")
 else
-        die
+        exit 2
 fi
 echo "$uli"
 [[ "$uli" == *"Error"* ]] && exit 1
