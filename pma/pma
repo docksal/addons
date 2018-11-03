@@ -58,7 +58,7 @@ yml_prepare ()
 	fi
 
 	# Create docksal.yml if needed
-	yml_is_valid || echo -e "$YML_DEFAULT_BODY" >> "$DOCKSAL_YML"
+	yml_is_valid || echo -e "$YML_DEFAULT_BODY" > "$DOCKSAL_YML"
 }
 
 # Install tool required to edit yml from command line
