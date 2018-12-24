@@ -18,8 +18,8 @@ echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
 echo-yellow () { echo -e "${yellow}$1${NC}"; }
 die () { echo -e "$1"; exit 1; }
 
-DOCKSAL_YML=".docksal/docksal.yml"
-DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
+DOCKSAL_LOCAL_YML=".docksal/docksal-local.yml"
+DOCKSAL_LOCAL_YML_NEW=".docksal/docksal-local.yml.new"
 DOCKSAL_ENV=".docksal/docksal.env"
 DOCKSAL_STACKS="$HOME/.docksal/stacks"
 andock_YML="$ADDON_ROOT/conf/andock.yml"
@@ -36,7 +36,7 @@ in_config ()
 # Check that docksal.yml is valid
 yml_is_valid ()
 {
-	[[ -f "$DOCKSAL_YML" ]] && $(cat "$DOCKSAL_YML" 2>/dev/null | grep "services" >/dev/null)
+	[[ -f "$DOCKSAL_LOCAL_YML" ]] && $(cat "$DOCKSAL_LOCAL_YML" 2>/dev/null | grep "services" >/dev/null)
 }
 
 # Prepares stack to editing docksal.yml config
@@ -58,7 +58,7 @@ yml_prepare ()
 	fi
 
 	# Create docksal.yml if needed
-	yml_is_valid || echo -e "$YML_DEFAULT_BODY" >> "$DOCKSAL_YML"
+	yml_is_valid || echo -e "$YML_DEFAULT_BODY" >> "$DOCKSAL_LOCAL_YML"
 }
 
 # Install tool required to edit yml from command line
@@ -73,7 +73,7 @@ yml_add_service ()
 {
 	[[ -z "$1" ]] && echo "File not found: $1" && return 1
 	# TODO: use https://www.npmjs.com/package/merge-yaml
-	cat "$1" >> "$DOCKSAL_YML"
+	cat "$1" >> "$DOCKSAL_LOCAL_YML"
 }
 
 # Removes a service from docksal.yml
@@ -83,8 +83,8 @@ yml_remove_service ()
 	[[ -z "$1" ]] && echo "Provide a service name to remove" && return 1
 	local service="$1"
 	read -r -d '' CODE_TO_EXEC <<-EOF
-		yaml set $DOCKSAL_YML services.$service | grep -v '$service:' | tee $DOCKSAL_YML_NEW >/dev/null;
-		[[ -z "\$(yaml get $DOCKSAL_YML_NEW services)" ]] && rm '$DOCKSAL_YML' || mv $DOCKSAL_YML_NEW $DOCKSAL_YML
+		yaml set $DOCKSAL_LOCAL_YML services.$service | grep -v '$service:' | tee $DOCKSAL_LOCAL_YML_NEW >/dev/null;
+		[[ -z "\$(yaml get $DOCKSAL_LOCAL_YML_NEW services)" ]] && rm '$DOCKSAL_LOCAL_YML' || mv $DOCKSAL_LOCAL_YML_NEW $DOCKSAL_LOCAL_YML
 	EOF
 	# Remove service. If no services left after that, then remove docksal.yml
 	fin exec "$CODE_TO_EXEC"
@@ -157,8 +157,7 @@ case "$1" in
 
     # Set ANDOCK_PROJECT_NAME to the basename.
     # This can not be done inside the docker image.
-    # This is only needed for create project.
-    # @TODO: Check parent folder names as well.
+    # @see config generate.
 	ANDOCK_PROJECT_NAME=$(basename "$PWD")
     cmd="andock"
 
@@ -168,12 +167,10 @@ case "$1" in
     else
 	    cmd="$cmd $*"
     fi
-
     # Exec andock inside andockio/andock container.
     export CONTAINER_NAME="andock"
-    fin exec "
-        export ANDOCK_INSIDE_DOCKSAL=true
-        export ANDOCK_PROJECT_NAME=${ANDOCK_PROJECT_NAME}
-        $cmd"
-		;;
+
+    # Execute the command as docker user.
+    fin exec gosu docker /bin/bash -c "export ANDOCK_INSIDE_DOCKSAL=true; export ANDOCK_PROJECT_NAME=${ANDOCK_PROJECT_NAME}; $cmd"
+	;;
 esac
