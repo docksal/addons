@@ -12,7 +12,7 @@
 * Ansible universe to configure everything.
 
 ## New to Andock:
-* [Introduction](https://andock.readthedocs.io/en/latest/big-picture/introduction/)
+* [Introduction](https://andock.readthedocs.io/en/latest/getting-started/introduction/)
 * [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
 * [andock command line tool](https://github.com/andock/andock/)
 
