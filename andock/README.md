@@ -1,22 +1,20 @@
 ![alt text](https://avatars3.githubusercontent.com/u/41805169?s=200&v=4"andock")
-# andock - docksal and ansible powered hosting.
-
-## What is andock?
-A docksal cloud hosting solution. <br>
+# Andock - Hosting with Docksal
 
 ## Key features
-* One environment for each branch.
+* Unlimited staging environments.
+* Build and deploy workflow.
 * Code-driven environment configuration.
+* SSH into container.
+* Full drush support.
 * Let's Encrypt support.
-* Easy to integrate in your CI environment.
-* Easy to use command line tool.
-* Use ansible to remote control docksal.
-* drush support including drush sql-sync without extra ssh container.
+* Easy to integrate in your CI environment - but no CI is required.
+* Ansible universe to configure everything.
 
-## For what can you use andock?
-* Host your project including environments support for every branch.
-* Host your project on acquia, platform.sh etc. Use andock for unlimited development environment.
-* Use andock to host review environments for qa suites. 
+## New to Andock:
+* [Introduction](https://andock.readthedocs.io/en/latest/big-picture/introduction/)
+* [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
+* [andock command line tool](https://github.com/andock/andock/)
 
 ## Addon installation:
 ```bash
@@ -28,8 +26,4 @@ fin addon install andock
 - `fin andock disable` to disable
 - `fin andock enable` to re-enable
 
-## Getting started:
-* [New to andock. Get the Big picture](https://andock.readthedocs.io/en/latest/big-picture/introduction/)
-* [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
-* [andock command line tool](https://github.com/andock/andock/)
 
