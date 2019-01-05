@@ -5,7 +5,7 @@
 * Unlimited staging environments.
 * Build and deploy workflow.
 * Code-driven environment configuration.
-* SSH into container.
+* SSH into any Docksal Container.
 * Full drush support.
 * Let's Encrypt support.
 * Easy to integrate in your CI environment - but no CI is required.
