@@ -9,7 +9,7 @@ fin addon install phpcs
 
 ## Usage once installed
 
-Once installed the following commands can be ran to
+Once installed the following commands can be ran to help with code quality.
 
 ### PHPCS
 
@@ -22,7 +22,7 @@ fin phpcs cs "modules/test_module"
 
 ```bash
 # Run With Other Options
-fin phpcs cs --standard="ExtraStandards,Drupal,DrupalPractice" modules/test_module
+fin phpcs cs --standards="ExtraStandards,Drupal,DrupalPractice" modules/test_module
 ```
 
 ### PHPCBF
@@ -37,7 +37,7 @@ fin phpcs cbf "modules/test_module"
 
 ```bash
 # Run With Other Options
-fin phpcs cbf --standard="ExtraStandards,Drupal,DrupalPractice" modules/test_module
+fin phpcs cbf --standards="ExtraStandards,Drupal,DrupalPractice" modules/test_module
 ```
 
 ### Default Standards Used
@@ -45,13 +45,13 @@ fin phpcs cbf --standard="ExtraStandards,Drupal,DrupalPractice" modules/test_mod
 For Drupal: Drupal,DrupalPractice
 For WordPres: WordPress
 
-To customize these the `--standard` option could be used.
-Additionally the `PHPCS_STANDARD` variable may set within `.docksal/docksal.env`.
+To customize these the `--standards` option could be used.
+Additionally the `PHPCS_STANDARDS` variable may set within `.docksal/docksal.env`.
 
 ### Default Extensions Used
 
 For Drupal: php,module,inc,install,test,profile,theme,css,info,txt,md
 For WordPress: php
 
-To customize these the `--extension` option could be used.
-Additionally the `PHPCS_EXTENSION` variable may set within `.docksal/docksal.env`.
+To customize these the `--extensions` option could be used.
+Additionally the `PHPCS_EXTENSIONS` variable may set within `.docksal/docksal.env`.
