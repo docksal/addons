@@ -63,4 +63,4 @@ if [[ "$@" =~ "--extensions=" ]]; then
 fi
 
 # run the command in the container.
-eval fin exec $COMMAND $STANDARD_OPT $EXTENSION_OPT "$@"
+eval fin exec "$COMMAND $STANDARD_OPT $EXTENSION_OPT $@"
