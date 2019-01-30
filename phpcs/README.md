@@ -1,7 +1,6 @@
-# PHP Codesniffer
+# PHP_CodeSniffer 
 
-Easily run PHPCS and PHPCBF commands to help with coding standards. Coding standards are included within the
-Docksal `cli` container for both [Drupal](https://www.drupal.org/docs/8/modules/code-review-module/installing-coder-sniffer) and [WordPress](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
+Easily run PHPCS and PHPCBF commands to detect violations of a defined coding standard. Coding standards are included within the Docksal `cli` container for both [Drupal](https://www.drupal.org/docs/8/modules/code-review-module/installing-coder-sniffer) and [WordPress](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
 
 ```bash
 fin addon install phpcs
@@ -13,7 +12,7 @@ Once installed the following commands can be ran to help with code quality.
 
 ### PHPCS
 
-PHP CodeSniffer detects violations of a defined coding standard.
+The main `phpcs` script that tokenizes PHP, JavaScript and CSS files to detect violations of a defined coding standard.
 
 ```bash
 # Default Command
@@ -27,7 +26,7 @@ fin phpcs cs --standards="ExtraStandards,Drupal,DrupalPractice" modules/test_mod
 
 ### PHPCBF
 
-PHP Code Beautifier and Fixer fixes violations of a defined coding standard.
+The second `phpcbf` script automatically corrects coding standard violations. 
 
 
 ```bash
@@ -43,15 +42,19 @@ fin phpcs cbf --standards="ExtraStandards,Drupal,DrupalPractice" modules/test_mo
 ### Default Standards Used
 
 For Drupal: Drupal,DrupalPractice
-For WordPres: WordPress
+
+For WordPress: WordPress
 
 To customize these the `--standards` option could be used.
+
 Additionally the `PHPCS_STANDARDS` variable may set within `.docksal/docksal.env`.
 
 ### Default Extensions Used
 
 For Drupal: php,module,inc,install,test,profile,theme,css,info,txt,md
+
 For WordPress: php
 
 To customize these the `--extensions` option could be used.
+
 Additionally the `PHPCS_EXTENSIONS` variable may set within `.docksal/docksal.env`.
