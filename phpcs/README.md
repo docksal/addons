@@ -1,4 +1,4 @@
-# PHP_CodeSniffer 
+# PHP Code Sniffer 
 
 Easily run PHPCS and PHPCBF commands to detect violations of a defined coding standard. Coding standards are included within the Docksal `cli` container for both [Drupal](https://www.drupal.org/docs/8/modules/code-review-module/installing-coder-sniffer) and [WordPress](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
 
