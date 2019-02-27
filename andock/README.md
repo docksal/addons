@@ -1,5 +1,7 @@
 ![alt text](https://avatars3.githubusercontent.com/u/41805169?s=200&v=4"andock")
-# Andock - Hosting with Docksal
+# Andock - A poor man's PasS
+
+Andock makes it dead simple to get Docksal environments up on your server. 
 
 ## Key features
 * Unlimited staging environments.

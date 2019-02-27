@@ -2,7 +2,7 @@
   # andock
   andock:
     hostname: andock
-    image: ${ANDOCK_IMAGE:-andockio/andock:latest}
+    image: ${ANDOCK_IMAGE:-andockio/andock:1.0}
     volumes:
       - project_root:/var/www:rw,nocopy  # Project root volume
       - docksal_ssh_agent:/.ssh-agent:ro
