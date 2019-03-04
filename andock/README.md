@@ -15,7 +15,7 @@ Andock makes it dead simple to get Docksal environments up on your server.
 
 ## New to Andock:
 * [Introduction](https://andock.readthedocs.io/en/latest/getting-started/introduction/)
-* [5 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
+* [15 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
 * [andock command line tool](https://github.com/andock/andock/)
 
 ## Addon installation:
