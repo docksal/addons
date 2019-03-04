@@ -1,5 +1,5 @@
 ![alt text](https://avatars3.githubusercontent.com/u/41805169?s=200&v=4"andock")
-# Andock - A poor man's PasS
+# Andock - A poor man's PaaS
 
 Andock makes it dead simple to get Docksal environments up on your server. 
 
