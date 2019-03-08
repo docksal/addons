@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-## Enable/disable acp for current project
+## Enable/disable andock for current project
 ##
 ## Sub-commands:
-##   enable		Enable acp
-##   disable	Disable acp
+##   enable		Enable andock
+##   disable	Disable andock
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -18,11 +18,11 @@ echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
 echo-yellow () { echo -e "${yellow}$1${NC}"; }
 die () { echo -e "$1"; exit 1; }
 
-DOCKSAL_YML=".docksal/docksal.yml"
-DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
+DOCKSAL_LOCAL_YML=".docksal/docksal-local.yml"
+DOCKSAL_LOCAL_YML_NEW=".docksal/docksal-local.yml.new"
 DOCKSAL_ENV=".docksal/docksal.env"
 DOCKSAL_STACKS="$HOME/.docksal/stacks"
-acp_YML="$ADDON_ROOT/conf/acp.yml"
+andock_YML="$ADDON_ROOT/conf/andock.yml"
 
 #----------------------------------- YML & config functions ------------------------------------------
 
@@ -36,7 +36,7 @@ in_config ()
 # Check that docksal.yml is valid
 yml_is_valid ()
 {
-	[[ -f "$DOCKSAL_YML" ]] && $(cat "$DOCKSAL_YML" 2>/dev/null | grep "services" >/dev/null)
+	[[ -f "$DOCKSAL_LOCAL_YML" ]] && $(cat "$DOCKSAL_LOCAL_YML" 2>/dev/null | grep "services" >/dev/null)
 }
 
 # Prepares stack to editing docksal.yml config
@@ -58,7 +58,7 @@ yml_prepare ()
 	fi
 
 	# Create docksal.yml if needed
-	yml_is_valid || echo -e "$YML_DEFAULT_BODY" >> "$DOCKSAL_YML"
+	yml_is_valid || echo -e "$YML_DEFAULT_BODY" >> "$DOCKSAL_LOCAL_YML"
 }
 
 # Install tool required to edit yml from command line
@@ -73,7 +73,7 @@ yml_add_service ()
 {
 	[[ -z "$1" ]] && echo "File not found: $1" && return 1
 	# TODO: use https://www.npmjs.com/package/merge-yaml
-	cat "$1" >> "$DOCKSAL_YML"
+	cat "$1" >> "$DOCKSAL_LOCAL_YML"
 }
 
 # Removes a service from docksal.yml
@@ -83,51 +83,51 @@ yml_remove_service ()
 	[[ -z "$1" ]] && echo "Provide a service name to remove" && return 1
 	local service="$1"
 	read -r -d '' CODE_TO_EXEC <<-EOF
-		yaml set $DOCKSAL_YML services.$service | grep -v '$service:' | tee $DOCKSAL_YML_NEW >/dev/null;
-		[[ -z "\$(yaml get $DOCKSAL_YML_NEW services)" ]] && rm '$DOCKSAL_YML' || mv $DOCKSAL_YML_NEW $DOCKSAL_YML
+		yaml set $DOCKSAL_LOCAL_YML services.$service | grep -v '$service:' | tee $DOCKSAL_LOCAL_YML_NEW >/dev/null;
+		[[ -z "\$(yaml get $DOCKSAL_LOCAL_YML_NEW services)" ]] && rm '$DOCKSAL_LOCAL_YML' || mv $DOCKSAL_LOCAL_YML_NEW $DOCKSAL_LOCAL_YML
 	EOF
 	# Remove service. If no services left after that, then remove docksal.yml
 	fin exec "$CODE_TO_EXEC"
 }
 
-#-------------------------------------- acp functions ---------------------------------------------
+#-------------------------------------- andock functions ---------------------------------------------
 
 # Enable container and settings
-acp_enable ()
+andock_enable ()
 {
-	# Check that acp is not already enabled
-	if (in_config "image: andockci\/acp"); then
-		echo "  andock-ci pipeline is already enabled." && exit
+	# Check that andock is not already enabled
+	if (in_config "image: andockio\/andock"); then
+		echo "  andock is already enabled." && exit
 	fi
 
-	echo "  Enabling andock-ci pipeline ..."
+	echo "  Enabling andock ..."
 	yml_prepare
-	# Add acp service to docksal.yml
-	yml_add_service "$acp_YML"
+	# Add andock service to docksal.yml
+	yml_add_service "$andock_YML"
 	# Apply stack changes.
 	fin up
-	echo "  andock-ci pipeline is enabled successfully."
-	echo "  Run fin acp to see a list of commands."
+	echo "  andock is enabled successfully."
+	echo "  Run fin andock to see a list of commands."
 }
 
 # Disable container and settings
-acp_disable ()
+andock_disable ()
 {
 	echo "  Running checks..."
 	# Make sure cli container is running
-	if ! (fin ps | grep "_acp_" | grep "Up" >/dev/null); then
+	if ! (fin ps | grep "_andock_" | grep "Up" >/dev/null); then
 		echo "  ERROR: Start the project with fin start first" && exit 1
 	fi
 
-	# Make sure acp is installed
-	if ! in_config "image: andockci\/acp"; then
-		echo "  andock-ci pipeline is not enabled at the moment." && exit
+	# Make sure andock is installed
+	if ! in_config "image: andockio\/andock"; then
+		echo "  andock is not enabled at the moment." && exit
 	fi
 
-	echo "  Preparing to remove acp service..."
+	echo "  Preparing to remove andock service..."
 	yml_install_tools
-	# Remove acp service from docksal.yml
-	yml_remove_service "acp"
+	# Remove andock service from docksal.yml
+	yml_remove_service "andock"
 	# Apply stack changes
 	fin up
 }
@@ -138,29 +138,28 @@ cd "$PROJECT_ROOT"
 
 case "$1" in
 	enable)
-		acp_enable
+		andock_enable
 		;;
 	disable)
-		acp_disable
+		andock_disable
 		;;
 	*)
 
-	# Make sure acp is installed.
-	if ! in_config "image: andockci\/acp"; then
-		echo "Usage: fin acp <enable|disable>" && exit 1
+	# Make sure andock is installed.
+	if ! in_config "image: andockio\/andock"; then
+		echo "Usage: fin andock <enable|disable>" && exit 1
 	fi
 
-    # Make sure acp is up.
-	if ! (fin ps | grep "_acp_" | grep "Up" >/dev/null); then
+    # Make sure andock is up.
+	if ! (fin ps | grep "_andock_" | grep "Up" >/dev/null); then
 		echo "  ERROR: Start the project with fin start first" && exit 1
 	fi
 
-    # Set ANDOCK_CI_PROJECT_NAME to the basename.
+    # Set ANDOCK_PROJECT_NAME to the basename.
     # This can not be done inside the docker image.
-    # This is only needed for create project.
-    # @TODO: Check parent folder names as well.
-	ANDOCK_CI_PROJECT_NAME=$(basename "$PWD")
-    cmd="acp"
+    # @see config generate.
+	ANDOCK_PROJECT_NAME=$(basename "$PWD")
+    cmd="andock"
 
     # Prepare the subcommand.
     if [[ $2 != "" ]]; then
@@ -168,12 +167,10 @@ case "$1" in
     else
 	    cmd="$cmd $*"
     fi
+    # Exec andock inside andockio/andock container.
+    export CONTAINER_NAME="andock"
 
-    # Exec acp inside andockci/acp container.
-    export CONTAINER_NAME="acp"
-    fin exec "
-        export ANDOCK_CI_INSIDE_DOCKSAL=true
-        export ANDOCK_CI_PROJECT_NAME=${ANDOCK_CI_PROJECT_NAME}
-        $cmd"
-		;;
+    # Execute the command as docker user.
+    fin exec gosu docker /bin/bash -c "export ANDOCK_INSIDE_DOCKSAL=true; export ANDOCK_PROJECT_NAME=${ANDOCK_PROJECT_NAME}; $cmd"
+	;;
 esac

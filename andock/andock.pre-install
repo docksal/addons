@@ -8,7 +8,7 @@ fi
 
 # Check Docksal running
 if [[ "$ADDON_GLOBAL" == "true" ]]; then
-	echo -e "[PRE-INSTALL] ERROR: acp addon should not be installed globally"
+	echo -e "[PRE-INSTALL] ERROR: andock addon should not be installed globally"
 	exit 1
 fi
 
@@ -26,15 +26,15 @@ if [[ $? != 0 ]]; then
 	exit 1
 fi
 
-# Check there is no acp already
-if (echo "$fin_config" | grep "image: docksal\/acp"); then
-	echo "[PRE-INSTALL] ERROR: Acp seems to be already enabled for this project"
+# Check there is no andock already
+if (echo "$fin_config" | grep "image: docksal\/andock"); then
+	echo "[PRE-INSTALL] ERROR: Andock seems to be already enabled for this project"
 	exit 1
 fi
 
-# Check there is no acp already
-if (echo "$fin_config" | grep "  acp:"); then
-	echo "[PRE-INSTALL] ERROR: Container named 'acp' already exists. Remove it to continue."
+# Check there is no andock already
+if (echo "$fin_config" | grep "  andock:"); then
+	echo "[PRE-INSTALL] ERROR: Container named 'andock' already exists. Remove it to continue."
 	exit 1
 fi
 
