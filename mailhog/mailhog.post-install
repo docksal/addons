@@ -2,5 +2,5 @@
 
 fin mailhog enable
 
-echo -e "${green}Mailhog UI:${NC} http://webmail.<project_name>.docksal"
+echo -e "${green}Mailhog UI:${NC} http://mail.<project_name>.docksal"
 echo -e "${green}More documentation:${NC} http://docs.docksal.io/en/master/tools/mailhog/"
