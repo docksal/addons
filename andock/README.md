@@ -16,7 +16,8 @@ Andock makes it dead simple to get Docksal environments up on your server.
 ## New to Andock:
 * [Introduction](https://andock.readthedocs.io/en/latest/getting-started/introduction/)
 * [15 minutes setup](https://andock.readthedocs.io/en/latest/getting-started/docksal/)
-* [andock command line tool](https://github.com/andock/andock/)
+* [Drupal 8 boilerplate](https://github.com/andock/boilerplate-drupal8)
+* [Andock command line tool](https://github.com/andock/andock/)
 
 ## Addon installation:
 ```bash

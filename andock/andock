@@ -167,10 +167,8 @@ case "$1" in
     else
 	    cmd="$cmd $*"
     fi
-    # Exec andock inside andockio/andock container.
-    export CONTAINER_NAME="andock"
 
     # Execute the command as docker user.
-    fin exec gosu docker /bin/bash -c "export ANDOCK_INSIDE_DOCKSAL=true; export ANDOCK_PROJECT_NAME=${ANDOCK_PROJECT_NAME}; $cmd"
+    fin exec --in=andock gosu docker /bin/bash -c "export ANDOCK_INSIDE_DOCKSAL=true; export ANDOCK_PROJECT_NAME=${ANDOCK_PROJECT_NAME}; $cmd"
 	;;
 esac
