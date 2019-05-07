@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+## This is where your custom path goes.
+## Variables:
+## DOCROOT - The docroot of your project. In most cases this will be 'docroot'.
+## PROFILE_DIR - The directory of your profile.
+## MODULE_NAME - The name of the module to be evaluated.
+## The custom path MUST match the format of your profile module path or you will get errors.
+
+CUSTOM="/var/www/${DOCROOT}/profiles/custom/${PROFILE_DIR}/modules/${MODULE_NAME}"

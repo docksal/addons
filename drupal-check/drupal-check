@@ -13,16 +13,19 @@ VERSION="1.0"
 ## Options
 ##    -a        Check analysis
 ##    -d        Check deprecations (default)
-##    -t        Module type {core, custom, contrib (default)}
+##    -t        Module type {core, custom, profile, contrib (default)}
 
 # Default variables.
 SCRIPTS_DIR="/var/www/.docksal/addons/drupal-check/scripts"
 MODULE_TYPE="contrib"
 CHECK_OPTS=()
+PROFILE_DIR=""
+SCRIPT_ARG=""
+
+# Import local settings
+[[ -f local.drupal-check ]] && source local.drupal-check || CUSTOM=false
 
 # Check if arguments are included.
-
-
 # Get the module name.
 if [[ -z "$1" ]]; then
     echo "Please provide a module name."
@@ -32,7 +35,7 @@ else
     shift
 fi
 
-while getopts 'adt:' opt; do
+while getopts 'adt:p:v' opt; do
     case ${opt} in
         a )
             CHECK_OPTS+=("-a")
@@ -43,12 +46,23 @@ while getopts 'adt:' opt; do
         t )
             MODULE_TYPE=${OPTARG}
         ;;
+        p )
+            PROFILE_DIR=${OPTARG}
+        ;;
+        v )
+            CHECK_OPTS+=("-vvv")
     esac
 done
 
 # Generate the module path.
 if [[ "${MODULE_TYPE}" = "core" ]]; then
     MODULE_PATH="/var/www/${DOCROOT}/${MODULE_TYPE}/modules/${MODULE_NAME}"
+elif [[ "${MODULE_TYPE}" = "profile" ]]; then
+  if ! [[ "${CUSTOM}" = false ]]; then
+    MODULE_PATH="${CUSTOM}"
+  else
+    MODULE_PATH="/var/www/${DOCROOT}/profiles/custom/${PROFILE_DIR}/modules/${MODULE_NAME}"
+  fi
 else
     MODULE_PATH="/var/www/${DOCROOT}/modules/${MODULE_TYPE}/${MODULE_NAME}"
 fi
