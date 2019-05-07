@@ -1,0 +1,4 @@
+scripts/drupal-check
+
+drupal-check.pre-install
+drupal-check.post-install

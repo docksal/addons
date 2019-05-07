@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+mkdir -p ${PROJECT_ROOT}/.docksal/addons/drupal-check/scripts

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+VERSION="1.0"
+
+## Check Drupal code for deprecations and discover bugs via static analysis.
+##
+## Built on PHPStan, this static analysis tool will check
+## for correctness, deprecation errors, and more
+##
+##  fin drupal-check <module_name> <options>
+##
+
+## Options
+##    -a        Check analysis
+##    -d        Check deprecations (default)
+##    -t        Module type {core, custom, contrib (default)}
+
+# Default variables.
+SCRIPTS_DIR="/var/www/.docksal/addons/drupal-check/scripts"
+MODULE_TYPE="contrib"
+CHECK_OPTS=()
+
+# Check if arguments are included.
+
+
+# Get the module name.
+if [[ -z "$1" ]]; then
+    echo "Please provide a module name."
+    exit 1
+else
+    MODULE_NAME="$1"
+    shift
+fi
+
+while getopts 'adt:' opt; do
+    case ${opt} in
+        a )
+            CHECK_OPTS+=("-a")
+        ;;
+        d )
+            CHECK_OPTS+=("-d")
+        ;;
+        t )
+            MODULE_TYPE=${OPTARG}
+        ;;
+    esac
+done
+
+# Generate the module path.
+if [[ "${MODULE_TYPE}" = "core" ]]; then
+    MODULE_PATH="/var/www/${DOCROOT}/${MODULE_TYPE}/modules/${MODULE_NAME}"
+else
+    MODULE_PATH="/var/www/${DOCROOT}/modules/${MODULE_TYPE}/${MODULE_NAME}"
+fi
+
+# Execute script.
+fin exec php ${SCRIPTS_DIR}/drupal-check ${CHECK_OPTS[@]} ${MODULE_PATH}
