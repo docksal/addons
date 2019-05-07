@@ -2,15 +2,9 @@
 
 ## Installation
 
-Download or clone the drupal-check addon and place it into your .docksal/addons directory.
-
 ```shell
-cd .docksal/addons
-git clone https://github.com/cbarrettgenuine/drupal-check.git
 fin addon install drupal-check
 ```
-
-__Note: If you want this to remain part of your project's repo, delete the `.git` folder from within the `.docksal/addons/drupal-check` folder__
 
 ## Usage
 
