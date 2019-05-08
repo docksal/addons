@@ -14,6 +14,7 @@ VERSION="1.0"
 ##    -a        Check analysis
 ##    -d        Check deprecations (default)
 ##    -t        Module type {core, custom, profile, contrib (default)}
+##    -v        Verbose output.
 
 # Default variables.
 SCRIPTS_DIR="/var/www/.docksal/addons/drupal-check/scripts"
@@ -68,4 +69,4 @@ else
 fi
 
 # Execute script.
-fin exec php ${SCRIPTS_DIR}/drupal-check ${CHECK_OPTS[@]} ${MODULE_PATH}
+fin exec php ${SCRIPTS_DIR}/drupal-check.phar ${CHECK_OPTS[@]} ${MODULE_PATH}
