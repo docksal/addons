@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# Check Docksal running
+if [[ "$DOCKER_RUNNING" != "true" ]]; then
+	echo "[PRE-INSTALL] ERROR: Docksal and project should be running"
+	exit 1
+fi
+
+# Check Docksal running
+if [[ "$ADDON_GLOBAL" == "true" ]]; then
+	echo -e "[PRE-INSTALL] ERROR: Coder addon should not be installed globally"
+	exit 1
+fi
+
+
+# Check project running
+if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
+	echo "[PRE-INSTALL] ERROR: Start the project with fin start first"
+	exit 1
+fi
+
+# Get fin config
+fin_config=$(fin config)
+if [[ $? != 0 ]]; then
+	echo "[PRE-INSTALL] ERROR: 'fin config' command was not successful. Check your fin config"
+	exit 1
+fi
+
+# Check there is no coder already
+if (echo "$fin_config" | grep "image: acondura/code-server"); then
+	echo "[PRE-INSTALL] ERROR: Coder seems to be already enabled for this project"
+	exit 1
+fi
+
+# Check there is no coder already
+if (echo "$fin_config" | grep "  acondura/code-server:"); then
+	echo "[PRE-INSTALL] ERROR: Container named 'coder' already exists. Remove it to continue."
+	exit 1
+fi
+
+FIXUID=$(id -u)
+FIXGID=$(id -g)
+# If the docksal-local.env file already exists,
+# make sure the 'fixuid' variables are not set
+if [ -f "$PROJECT_ROOT/.docksal/docksal-local.env" ]; then
+  # Delete the FIXUID line
+  perl -i -pe"s/.*FIXUID.*\r\n//g" "$PROJECT_ROOT/.docksal/docksal-local.env"
+  # Delete the FIGUID line
+  perl -i -pe"s/.*FIXGID.*\r\n//g" "$PROJECT_ROOT/.docksal/docksal-local.env"
+fi
+# Add the 'fixuid' variables
+echo "FIXUID=$FIXUID" >> "$PROJECT_ROOT/.docksal/docksal-local.env"
+echo "FIXGID=$FIXGID" >> "$PROJECT_ROOT/.docksal/docksal-local.env"
+
+perl -i -pe"s/.*CODER_PARAMS.*\r\n//g" "$PROJECT_ROOT/.docksal/docksal-local.env"
+# If using local Docksal
+if [[ $VIRTUAL_HOST == *"docksal" ]]; then
+  # Don't use SSL certs if not a public server
+  CODER_PARAMS="code-server --no-auth --allow-http -e /home/coder/.local/share/code-server/extensions"
+else # Else, it's a server
+  # Use SSL certs since it's a public server
+  CODER_PARAMS="code-server --cert /home/coder/certs/ide-$VIRTUAL_HOST.crt --cert-key /home/coder/certs/ide-$VIRTUAL_HOST.key --allow-http -e /home/coder/.local/share/code-server/extensions"
+  if [ -f $HOME/.docksal/certs/$VIRTUAL_HOST.crt ]; then
+    if [ ! -f $HOME/.docksal/certs/ide-$VIRTUAL_HOST.crt ]; then
+      cp -rf $HOME/.docksal/certs/$VIRTUAL_HOST.crt $HOME/.docksal/certs/ide-$VIRTUAL_HOST.crt
+      cp -rf $HOME/.docksal/certs/$VIRTUAL_HOST.key $HOME/.docksal/certs/ide-$VIRTUAL_HOST.key
+    fi
+  fi
+fi
+echo "CODER_PARAMS='$CODER_PARAMS'" >> "$PROJECT_ROOT/.docksal/docksal-local.env"
+
+# All good
+exit 0

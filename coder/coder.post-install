@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Console colors
+red='\033[0;91m'
+red_bg='\033[101m'
+yellow_bg='\033[43;90m'
+green='\033[0;32m'
+green_bg='\033[42m'
+yellow='\033[0;33m'
+yellow_bold='\033[1;33m'
+NC='\033[0m'
+
+
+echo-red () { echo -e "${red}$1${NC}"; }
+echo-green () { echo -e "${green}$1${NC}"; }
+echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
+echo-yellow () { echo -e "${yellow}$1${NC}"; }
+
+fin coder enable
+
+SERVICE="_coder"
+C_NAME="$COMPOSE_PROJECT_NAME_SAFE$SERVICE"
+CODER_CONTAINER_ID=$(fin docker container ls | grep $C_NAME | awk '{ print $1 }')
+# Set Git username
+fin docker exec \
+  -w /home/coder/project/code-server \
+  -it $CODER_CONTAINER_ID \
+  git config --global user.name "$COMPOSE_PROJECT_NAME_SAFE"
+
+# Set Git email
+fin docker exec \
+  -w /home/coder/project/code-server \
+  -it $CODER_CONTAINER_ID \
+  git config --global user.email "$COMPOSE_PROJECT_NAME_SAFE"
+
+# Set aliases
+fin docker exec \
+  -w /home/coder \
+  -it $CODER_CONTAINER_ID \
+  bash -c "echo \"alias l='ls -la'\nalias s='cd ..'\" >> .bashrc"
+
+# Copy id_rsa.pub in authorized_keys
+fin docker exec \
+  -w /home/coder/.ssh \
+  -it $CODER_CONTAINER_ID \
+  bash -c "cat id_rsa.pub >> authorized_keys"

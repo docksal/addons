@@ -1,0 +1,12 @@
+
+  coder:
+    hostname: ide-${COMPOSE_PROJECT_NAME_SAFE}
+    image: acondura/code-server
+    user: ${FIXUID:-1000}:${FIXGID:-1000}
+    volumes:
+      - ${PROJECT_ROOT}:/home/coder/project/code-server
+      - $HOME/.docksal/certs:/home/coder/certs
+      - $HOME/.ssh:/home/coder/.ssh
+    command: ${CODER_PARAMS}
+    labels:
+      - io.docksal.virtual-host=ide-${VIRTUAL_HOST}
