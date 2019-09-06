@@ -31,7 +31,7 @@ fin docker exec \
 fin docker exec \
   -w /home/coder/project/code-server \
   -it $CODER_CONTAINER_ID \
-  git config --global user.email "$COMPOSE_PROJECT_NAME_SAFE"
+  git config --global user.email "$GIT_USER_EMAIL"
 
 # Set aliases
 fin docker exec \
