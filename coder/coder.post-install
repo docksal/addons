@@ -25,7 +25,7 @@ CODER_CONTAINER_ID=$(fin docker container ls | grep $C_NAME | awk '{ print $1 }'
 fin docker exec \
   -w /home/coder/project/code-server \
   -it $CODER_CONTAINER_ID \
-  git config --global user.name "$COMPOSE_PROJECT_NAME_SAFE"
+  git config --global user.name "$GIT_USER_NAME"
 
 # Set Git email
 fin docker exec \
