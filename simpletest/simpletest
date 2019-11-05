@@ -18,5 +18,10 @@ else
 	exit 1
 fi
 
+SIMPLETEST_STATUS=`drush pm-info simpletest | grep Status | cut -d : -f 2`
+if [[ "$SIMPLETEST_STATUS" != *"enabled"* ]]; then
+  drush pm-enable -y simpletest
+fi
+
 # Execute the script.
 php "$SCRIPT_FILE" --color "$@"
