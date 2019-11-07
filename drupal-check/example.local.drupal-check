@@ -7,4 +7,15 @@
 ## MODULE_NAME - The name of the module to be evaluated.
 ## The custom path MUST match the format of your profile module path or you will get errors.
 
-CUSTOM="/var/www/${DOCROOT}/profiles/custom/${PROFILE_DIR}/modules/${MODULE_NAME}"
+## Any of the following can be changed and will overwrite the variables in
+## the main script.
+# ROOT_DIR="/var/www/"
+# COMPOSER_DIR="${PROJECT_ROOT}/vendor/bin/drupal-check"
+# MODULE_TYPE="contrib"
+# CHECK_OPTS=()
+# PROFILE_DIR=""
+# SCRIPT_ARG=""
+# COMPOSER="local"
+
+
+DRUPAL_CHECK_MODULE_PATH="/var/www/${DOCROOT}/profiles/custom/${PROFILE_DIR}/modules/${MODULE_NAME}"
