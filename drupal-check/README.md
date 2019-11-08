@@ -2,7 +2,7 @@
 
 ## Usage
 
-This tool works on all Drupal code.
+Check Drupal code for deprecations and discover bugs via static analysis using [mglaman/drupal-check](https://github.com/mglaman/drupal-check)
 
 ### 1. Run drupal-check
 
