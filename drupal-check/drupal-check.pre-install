@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
+# Check that wget is installed as it is required to download the script
+if ! (which wget >/dev/null); then
+    echo "ERROR: wget is required to install drupal-check addon"
+    exit 1
+fi
+
 mkdir -p ${PROJECT_ROOT}/.docksal/addons/drupal-check/scripts
