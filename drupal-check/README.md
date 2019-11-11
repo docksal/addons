@@ -1,5 +1,19 @@
 # Drupal-check Docksal Addon
 
+## Installation
+
+Download or clone the drupal-check addon and place it into your .docksal/addons directory.
+
+This will work regardless of whether your project uses the the Composer based `mglaman/drupal-check` or not.  If you are not using Composer, this addon will install the script from Github for you.
+
+```shell
+cd .docksal/addons
+git clone https://github.com/cbarrettgenuine/drupal-check.git
+fin addon install drupal-check
+```
+
+__Note: If you want this to remain part of your project's repo, delete the `.git` folder from within the `.docksal/addons/drupal-check` folder__
+
 ## Usage
 
 Check Drupal code for deprecations and discover bugs via static analysis using [mglaman/drupal-check](https://github.com/mglaman/drupal-check)
@@ -36,7 +50,7 @@ The command `fin drupal-check my_profile_module -a -t profile -p my_profile_name
 /var/www/DOCROOT/profiles/custom/my_profile_name/modules/my_profile_module
 ```
 
-In the event that this does not match your path, you can use a local.drupal-check file. For best results, copy and rename the `example.local.drupal-check` file and add your path to the `CUSTOM` variable.
+In the event that this does not match your path, you can use a local.drupal-check file. For best results, copy and rename the `example.local.drupal-check` file and add your path to the `DRUPAL_CHECK_MODULE_PATH` variable.
 
 Examples:
 

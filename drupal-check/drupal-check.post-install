@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPTS_DIR="${PROJECT_ROOT}/.docksal/addons/drupal-check/scripts"
-
-wget -O ${SCRIPTS_DIR}/drupal-check.phar https://github.com/mglaman/drupal-check/releases/latest/download/drupal-check.phar
-
-chmod +x ${SCRIPTS_DIR}/drupal-check.phar
