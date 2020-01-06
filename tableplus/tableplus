@@ -16,4 +16,4 @@ NAME=${COMPOSE_PROJECT_NAME}
 
 PORT=${PORT:-$container_port}
 
-open "mariadb://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local"
+open "mariadb://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
