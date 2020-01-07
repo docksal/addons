@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+## Opens TablePlus
+##
+## Usage: fin tableplus
+
+# Abort if anything fails
+set -e
+
+container_port=$(docker ps --all --filter 'label=com.docker.compose.service=db' --filter "label=com.docker.compose.project=${COMPOSE_PROJECT_NAME_SAFE}" --format '{{.Ports}}' | sed 's/.*0.0.0.0://g'|sed 's/->.*//g')
+HOST=${VIRTUAL_HOST}
+DB=${MYSQL_DATABASE:-default}
+USER=${MYSQL_USER:-user}
+PASS=${MYSQL_PASSWORD:-user}
+NAME=${COMPOSE_PROJECT_NAME}
+
+PORT=${PORT:-$container_port}
+
+open "mariadb://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
