@@ -2,9 +2,10 @@
 
 #: exec_target = cli
 
-## Install wkhtmltopdf to your current cli
+## Install wkhtmltopdf to your current cli, installs a base compiled version along with fonts and xvfb for x server 
+## rendering
 ##
-## Usage: fin wkhtmltopdf install | version | remove
+## Usage: fin wkhtmltopdf install | version 
 
 case "$1" in
 	install)
