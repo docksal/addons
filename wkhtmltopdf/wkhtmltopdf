@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+#: exec_target = cli
+
+## Install wkhtmltopdf to your current cli
+##
+## Usage: fin wkhtmltopdf install | version | remove
+
+case "$1" in
+	install)
+		sudo apt-get install -y \
+    libxrender1 \
+    libfontconfig1 \
+    libx11-dev \
+    libjpeg62 \
+    libxtst6 \
+    fontconfig \
+    ttf-mscorefonts-installer \
+    xfonts-75dpi \
+    xvfb \
+    wget \
+    && sudo wget https://github.com/SilvertipSoftware/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdfx \
+    && sudo chmod +x /usr/local/bin/wkhtmltopdfx
+    sudo touch /usr/local/bin/wkhtmltopdf
+    echo 'xvfb-run -a -s "-screen 0 1024x768x16" wkhtmltopdfx "$@"' | sudo tee -a /usr/local/bin/wkhtmltopdf
+    sudo chmod a+x /usr/local/bin/wkhtmltopdf
+    wkhtmltopdf -V
+
+		;;
+	version|-v)
+		wkhtmltopdf -V
+		;;
+	*)
+		echo "Install wkhtmltopdf to your current cli"
+        echo " "
+        echo "Usage: fin wkhtmltopdf install | version "
+		;;
+esac
