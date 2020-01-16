@@ -6,6 +6,9 @@
 ##
 ## Usage: fin simpletest [arguments]
 
+set -e
+set -o pipefail
+
 DRUPAL8_PATH="$PROJECT_ROOT/$DOCROOT/core/scripts/run-tests.sh"
 DRUPAL7_PATH="$PROJECT_ROOT/$DOCROOT/scripts/run-tests.sh"
 
@@ -16,6 +19,11 @@ elif [[ -f "$DRUPAL7_PATH" ]]; then
 else
 	echo "ERROR: could not find run-tests.sh"
 	exit 1
+fi
+
+SIMPLETEST_STATUS=`drush pm-info simpletest | grep Status | cut -d : -f 2`
+if [[ "$SIMPLETEST_STATUS" != *"enabled"* ]]; then
+  drush pm-enable -y simpletest
 fi
 
 # Execute the script.
