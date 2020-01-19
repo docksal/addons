@@ -2,7 +2,7 @@
 
 ## Opens TablePlus
 ##
-## Usage: fin tableplus
+## Usage: fin tableplus [mysql|mariadb|postgre]
 
 # Abort if anything fails
 set -e
@@ -16,4 +16,20 @@ NAME=${COMPOSE_PROJECT_NAME}
 
 PORT=${PORT:-$container_port}
 
-open "mariadb://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
+
+
+case "$1" in
+	mysql)
+		open "mysql://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
+		;;
+	mariadb)
+		open "mariadb://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
+		;;
+    postgre)
+		open "postgresql://${USER}:${PASS}@${HOST}:${PORT}/${DB}?statusColor=007F3D&enviroment=local&name=${NAME}"
+		;;
+	*)
+    echo "Usage: fin tableplus [mysql|mariadb|postgre]"
+		exit 1
+		;;
+esac
