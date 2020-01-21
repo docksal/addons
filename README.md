@@ -26,4 +26,4 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [simpletest](simpletest) | Runs SimpleTest tests in Drupal 7 and 8 | Drupal |
 |   [solr](solr) | [Apache Solr](http://lucene.apache.org/solr/) search service for current project |  |
 |   [uli](uli) | Generate one time login url for current site | Drupal |
-
+|   [wkhtmltopdf](wkhtmltopdf) | Installs wkhtmltopdf 0.12.5 with QT compiled in. |  |
