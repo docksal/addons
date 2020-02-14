@@ -1,0 +1,176 @@
+#!/bin/bash
+
+CONFIG_DIR="$HOME/.docksal"
+MKCERT_BIN="$CONFIG_DIR/bin/mkcert"
+MKCERT_ADDON="$CONFIG_DIR/addon/mkcert"
+
+REQUIREMENTS_MKCERT=1.4.1
+URL_MKCERT_MAC="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-darwin-amd64"
+URL_MKCERT_NIX="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-linux-amd64"
+URL_MKCERT_WIN="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-windows-amd64.exe"
+
+
+if [[ "$TERM" != "dumb" ]]; then
+	# Console colors
+	red='\033[0;91m'
+	red_bg='\033[101m'
+	yellow_bg='\033[43m'
+	lightmagenta_bg='\033[0;105m'
+	green='\033[0;32m'
+	green_bg='\033[42m'
+	yellow='\033[0;33m'
+	yellow_bold='\033[1;33m'
+	blue='\033[0;34m'
+	lime='\033[0;92m'
+	acqua='\033[0;96m'
+	magenta='\033[0;35m'
+	lightmagenta='\033[0;95m'
+	NC='\033[0m'
+fi
+
+echo-red ()      { echo -e "${red}$1${NC}"; }
+echo-green ()    { echo -e "${green}$1${NC}"; }
+echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
+echo-yellow ()   { echo -e "${yellow}$1${NC}"; }
+
+echo-warning ()
+{
+	echo -e "${yellow_bg} WARNING: ${NC} ${yellow}$1${NC}";
+	shift
+	for arg in "$@"; do
+		echo -e "           $arg"
+	done
+}
+
+echo-error ()
+{
+	echo -e "${red_bg} ERROR: ${NC} ${red}$1${NC}"
+	shift
+	for arg in "$@"; do
+		echo -e "        $arg"
+	done
+}
+
+echo-alert ()
+{
+	echo -e "${lightmagenta_bg} ALERT: ${NC} ${lightmagenta}$1${NC}"
+	shift
+	for arg in "$@"; do
+		echo -e "         $arg"
+	done
+}
+
+# print string in $1 for $2 times
+echo-repeat ()
+{
+    seq  -f $1 -s '' $2; echo
+}
+
+# prints message to stderr
+echo-stderr ()
+{
+	(>&2 echo "$@")
+}
+
+# Get path to .docksal folder using upfind
+get_project_path ()
+{
+	if [[ "$DOCKSAL_PATH" == "" ]]; then
+		DOCKSAL_PATH=$(upfind ".docksal")
+	fi
+	# If we reached $HOME, then we did not find the project root.
+	if [[ "$DOCKSAL_PATH" != "$HOME" ]]; then
+		echo "$DOCKSAL_PATH"
+	fi
+}
+
+is_linux ()
+{
+	[[ "$OS_TYPE" == "Linux" ]]
+}
+
+# TODO: drop this function in May 2020 to complete Babun deprecation
+is_windows ()
+{
+	[[ "$OS_TYPE" == "Cygwin" ]]
+}
+
+is_wsl ()
+{
+	[[ "$OS_TYPE" == "WSL" ]]
+}
+
+is_mac ()
+{
+	[[ "$OS_TYPE" == "Darwin" ]]
+}
+
+install_linux ()
+{
+# Install mkcert ssl tool
+	echo-green "Installing Mkcert..."
+	curl -fL# "$URL_MKCERT_NIX" -o "$MKCERT_BIN" && \
+	chmod +x "$MKCERT_BIN" && \
+	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
+		echo-red "Mkcert installation/upgrade has failed."
+		exit 1
+        fi
+	mkcert -install
+	echo-green "mkcert version $(mkcert --version) installed"
+}
+
+install_windows ()
+{
+# Install mkcert ssl tool
+	echo-green "Installing Mkcert..."
+	curl -fL# "$URL_MKCERT_WIN" -o "$MKCERT_BIN" && \
+	chmod +x "$MKCERT_BIN" && \
+	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
+		echo-red "Mkcert installation/upgrade has failed."
+		exit 1
+        fi
+	mkcert -install
+	echo-green "mkcert version $(mkcert --version) installed"
+}
+
+install_mac ()
+{
+# Install mkcert ssl tool
+	echo-green "Installing Mkcert..."
+	curl -fL# "$URL_MKCERT_MAC" -o "$MKCERT_BIN" && \
+	chmod +x "$MKCERT_BIN" && \
+	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
+		echo-red "Mkcert installation/upgrade has failed."
+		exit 1
+        fi
+	mkcert -install
+	echo-green "mkcert version $(mkcert --version) installed"
+}
+
+
+if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
+	echo "  NOT in CONFIG_DIR and mkcert not here"
+	if is_linux; then
+	  install_linux
+	fi
+	if is_windows; then
+	  install_windows
+	fi
+	if is_wsl; then
+	  install_linux
+	fi
+	if is_mac; then
+	  install_mac
+	fi
+else
+	echo-green "mkcert allready installed; found $(which mkcert)"
+fi
+
+if [ ! "${ADDON_ROOT}" == "$MKCERT_ADDON" ]; then
+	mkdir -p ${MKCERT_ADDON}
+	mv ${ADDON_ROOT}/mkcert ${MKCERT_ADDON}
+	mv ${ADDON_ROOT}/mkcert.pre-install ${MKCERT_ADDON}
+	rm -rf ${ADDON_ROOT}
+	echo-green "Moved addon mkcert to global docksal config"
+fi
+
