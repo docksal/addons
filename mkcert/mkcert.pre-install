@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONFIG_DIR="$HOME/.docksal"
+CONFIG_CERTS=${CONFIG_CERTS:-$HOME/.docksal/certs}
 MKCERT_BIN="$CONFIG_DIR/bin/mkcert"
 MKCERT_ADDON="$CONFIG_DIR/addon/mkcert"
 
@@ -115,7 +116,7 @@ install_linux ()
 		echo-red "Mkcert installation/upgrade has failed."
 		exit 1
         fi
-	mkcert -install
+	sudo mkcert -install
 	echo-green "mkcert version $(mkcert --version) installed"
 }
 
@@ -143,7 +144,7 @@ install_mac ()
 		echo-red "Mkcert installation/upgrade has failed."
 		exit 1
         fi
-	mkcert -install
+	sudo mkcert -install
 	echo-green "mkcert version $(mkcert --version) installed"
 }
 
@@ -162,6 +163,7 @@ if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
 	if is_mac; then
 	  install_mac
 	fi
+	mkdir -p "${CONFIG_CERTS}"
 else
 	echo-green "mkcert allready installed; found $(which mkcert)"
 fi
