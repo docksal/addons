@@ -6,13 +6,17 @@ die ()
 	exit 1
 }
 
-## Generate one time user login link. Add -s to use https in url.
-## Usage fin uli @drushalias -s
-## The drush alias and -s flags are optional.
+## Generate one time user login link. Add -s to use https in url or -i for insecure.
+## Usage fin uli @drushalias -s -i
+## The drush alias and -s  -i flags are optional.
+## Set environmental variable DOCKSAL_ADDON_ULI_USE_HTTPS=1 in either the global docksal.env
+## or the project docksal-local.env file to always use https in the link. Use -i to override.
 
 cd "$PROJECT_ROOT/$DOCROOT" || die "Could not change dir to $PROJECT_ROOT/$DOCROOT"
 
-https=0 # Default to not use https
+# Check the environmental variable DOCKSAL_ADDON_ULI_USE_HTTPS to see if it is set to true.
+# This will be overridden by command line options given in the next section.
+https=${DOCKSAL_ADDON_ULI_USE_HTTPS:-0}  # Default is to not use https
 
 # Check the first two options / arguments given on the the command line for
 # what looks like a Drush site alias or the -s option to use https in the url.
@@ -23,6 +27,9 @@ while [ $count -ne 0 ]; do
             shift 1
         elif [[ $1 == "-s" ]]; then
             https=1
+            shift 1
+        elif [[ $1 == "-i" ]]; then
+            https=0
             shift 1
         fi
         count=$[$count-1]
