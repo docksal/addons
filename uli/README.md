@@ -10,7 +10,7 @@
 fin uli [-s] [-i] [@drushsitealias] [ drush uli options ]
 ```
 
-* `-s` outputs the login url with https instead of default of https
+* `-s` outputs the login url with https instead of default of http
 * Setting `DOCKSAL_ADDON_ULI_USE_HTTPS=1` in the global `docksal.env` or in a project's `docksal-local.env` will force the use of https in the link output unless overridden by the `-i` option.
 * `-i` outputs the login url with the default http
 * Drush site alias - useful for Drupal multi-site installations
