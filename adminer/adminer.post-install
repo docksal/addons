@@ -17,4 +17,4 @@ echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
 echo-yellow () { echo -e "${yellow}$1${NC}"; }
 fin adminer enable
 
-echo-green "Adminer UI:${yellow} http://adminer.$VIRTUAL_HOST${NC}"
+echo-green "Adminer UI:${yellow} http://adminer-$VIRTUAL_HOST${NC}"
