@@ -16,7 +16,6 @@ URL_MKCERT_MAC="https://github.com/FiloSottile/mkcert/releases/download/v${REQUI
 URL_MKCERT_NIX="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-linux-amd64"
 URL_MKCERT_WIN="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-windows-amd64.exe"
 
-
 if [[ "$TERM" != "dumb" ]]; then
 	# Console colors
 	red='\033[0;91m'
@@ -112,64 +111,27 @@ is_mac ()
 	[[ "$OS_TYPE" == "Darwin" ]]
 }
 
-install_linux ()
-{
-# Install mkcert ssl tool
-	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
-	curl -fL# "$URL_MKCERT_NIX" -o "$MKCERT_BIN" && \
+if [[ "$(mkcert --version 2>&1)" != "v${REQUIREMENTS_MKCERT}" ]]; then
+	is_linux && URL_MKCERT=$URL_MKCERT_NIX
+	is_wsl && URL_MKCERT=$URL_MKCERT_NIX
+	is_windows && URL_MKCERT=$URL_MKCERT_WIN
+	is_mac && URL_MKCERT=$URL_MKCERT_MAC
+
+	echo-green "[PRE-INSTALL] INFO: Installing mkcert..."
+	curl -fL# "$URL_MKCERT" -o "$MKCERT_BIN" && \
 	chmod +x "$MKCERT_BIN" && \
-	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
+
+	if (mkcert --version &>/dev/null); then
+		echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
+	else
+		echo-red "[PRE-INSTALL] ERROR: mkcert installation/upgrade failed."
 		exit 1
-        fi
-	sudo "$MKCERT_BIN" -install
-	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
-}
-
-install_windows ()
-{
-# Install mkcert ssl tool
-	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
-	curl -fL# "$URL_MKCERT_WIN" -o "$MKCERT_BIN" && \
-	chmod +x "$MKCERT_BIN" && \
-	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
-		exit 1
-        fi
-	mkcert -install
-	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
-}
-
-install_mac ()
-{
-# Install mkcert ssl tool
-	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
-	curl -fL# "$URL_MKCERT_MAC" -o "$MKCERT_BIN" && \
-	chmod +x "$MKCERT_BIN" && \
-	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
-		exit 1
-        fi
-	sudo "$MKCERT_BIN" -install
-	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
-}
-
-
-if [ "$(mkcert --version 2>&1)" != "v${REQUIREMENTS_MKCERT}" ]; then
-	if is_linux; then
-	  install_linux
 	fi
-	if is_windows; then
-	  install_windows
-	fi
-	if is_wsl; then
-	  install_linux
-	fi
-	if is_mac; then
-	  install_mac
-	fi
+
+	echo-green "[PRE-INSTALL] INFO: Initializing mkcert"
+	sudo mkcert -install
+
 	mkdir -p "${CONFIG_CERTS}"
 else
 	echo-green "[PRE-INSTALL] INFO: mkcert binary allready installed; found $(which mkcert)"
 fi
-
