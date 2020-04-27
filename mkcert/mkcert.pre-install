@@ -1,9 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Check Global flag
+if [[ "$ADDON_GLOBAL" != "true" ]]; then
+	echo -e "[PRE-INSTALL] ERROR: Mkcert addon should installed globally, use 'fin addon install mkcert -g'"
+	exit 1
+fi
 
 CONFIG_DIR="$HOME/.docksal"
 CONFIG_CERTS=${CONFIG_CERTS:-$HOME/.docksal/certs}
 MKCERT_BIN="$CONFIG_DIR/bin/mkcert"
-MKCERT_ADDON="$CONFIG_DIR/addon/mkcert"
+MKCERT_ADDON="$CONFIG_DIR/addons/mkcert"
 
 REQUIREMENTS_MKCERT=1.4.1
 URL_MKCERT_MAC="https://github.com/FiloSottile/mkcert/releases/download/v${REQUIREMENTS_MKCERT}/mkcert-v${REQUIREMENTS_MKCERT}-darwin-amd64"
@@ -109,48 +115,47 @@ is_mac ()
 install_linux ()
 {
 # Install mkcert ssl tool
-	echo-green "Installing Mkcert..."
+	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
 	curl -fL# "$URL_MKCERT_NIX" -o "$MKCERT_BIN" && \
 	chmod +x "$MKCERT_BIN" && \
 	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "Mkcert installation/upgrade has failed."
+		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
 		exit 1
         fi
-	sudo mkcert -install
-	echo-green "mkcert version $(mkcert --version) installed"
+	sudo "$MKCERT_BIN" -install
+	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
 }
 
 install_windows ()
 {
 # Install mkcert ssl tool
-	echo-green "Installing Mkcert..."
+	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
 	curl -fL# "$URL_MKCERT_WIN" -o "$MKCERT_BIN" && \
 	chmod +x "$MKCERT_BIN" && \
 	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "Mkcert installation/upgrade has failed."
+		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
 		exit 1
         fi
 	mkcert -install
-	echo-green "mkcert version $(mkcert --version) installed"
+	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
 }
 
 install_mac ()
 {
 # Install mkcert ssl tool
-	echo-green "Installing Mkcert..."
+	echo-green "[PRE-INSTALL] INFO: Installing Mkcert..."
 	curl -fL# "$URL_MKCERT_MAC" -o "$MKCERT_BIN" && \
 	chmod +x "$MKCERT_BIN" && \
 	if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-		echo-red "Mkcert installation/upgrade has failed."
+		echo-red "[PRE-INSTALL] ERROR: Mkcert installation/upgrade has failed."
 		exit 1
         fi
-	sudo mkcert -install
-	echo-green "mkcert version $(mkcert --version) installed"
+	sudo "$MKCERT_BIN" -install
+	echo-green "[PRE-INSTALL] INFO: mkcert version $(mkcert --version) installed"
 }
 
 
-if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
-	echo "  NOT in CONFIG_DIR and mkcert not here"
+if [ "$(mkcert --version 2>&1)" != "v${REQUIREMENTS_MKCERT}" ]; then
 	if is_linux; then
 	  install_linux
 	fi
@@ -165,14 +170,6 @@ if [ "$(mkcert --version 2>&1 >/dev/null)" ]; then
 	fi
 	mkdir -p "${CONFIG_CERTS}"
 else
-	echo-green "mkcert allready installed; found $(which mkcert)"
-fi
-
-if [ ! "${ADDON_ROOT}" == "$MKCERT_ADDON" ]; then
-	mkdir -p ${MKCERT_ADDON}
-	mv ${ADDON_ROOT}/mkcert ${MKCERT_ADDON}
-	mv ${ADDON_ROOT}/mkcert.pre-install ${MKCERT_ADDON}
-	rm -rf ${ADDON_ROOT}
-	echo-green "Moved addon mkcert to global docksal config"
+	echo-green "[PRE-INSTALL] INFO: mkcert binary allready installed; found $(which mkcert)"
 fi
 
