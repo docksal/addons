@@ -13,7 +13,7 @@ The cert is automatically generated for `VIRTUAL_HOST` and `*.VIRTUAL_HOST`.
 ## Installation
 
 ```bash
-fin addon install mkcert -g
+fin addon install --global mkcert
 ```
 
 The `mkcert` binary is installed in `$HOME/.docksal/bin/mkcert` **except** when `mkcert` is already installed globally. 
