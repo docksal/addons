@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+## Opens DBeaver
+##
+## Usage: fin dbeaver [container (default: db)]
+
+# Abort if anything fails
+set -e
+
+info() {
+    echo -e "\033[0;32m${1}\033[0m"
+}
+
+error() {
+    echo -e "\033[1;31m${1}\033[0m"
+}
+
+function detectDBeaver() {
+    local OS
+    OS=$(uname | tr '[:upper:]' '[:lower:]')
+    case $OS in
+        linux*)
+            DBEAVER=$(command -v dbeaver)
+            ;;
+        darwin*)
+            DBEAVER="$(osascript -e 'POSIX path of (path to application "DBeaver")')Contents/MacOS/dbeaver"
+            ;;
+        *)
+            echo "Unknown system: ${OS} is currently not supported!"
+            exit 1
+            ;;
+    esac
+
+    if [[ ! -f "${DBEAVER}" ]]; then
+        error "Error: DBeaver is not installed."
+        if [[ "${OS}" == darwin* ]]; then
+            echo
+            echo "Install DBeaver with brew:"
+            echo
+            echo "  brew cask install dbeaver-community"
+        fi
+        exit 1
+    fi
+}
+
+function getContainerId() {
+    CONTAINER_ID=$(docker ps --all --filter "label=com.docker.compose.service=${DB_SERVICE}" --filter "label=com.docker.compose.project=${COMPOSE_PROJECT_NAME_SAFE}" --format '{{.ID}}')
+    if [ -z "${CONTAINER_ID}" ]; then
+        error "Error: Unable to detect database container with name \"${DB_SERVICE}\"."
+        exit 1
+    fi
+}
+
+function detectContainerPort() {
+    CONTAINER_PORT=$(docker ps --filter "id=${CONTAINER_ID}" --format "{{.Ports}}" | sed 's/.*0.0.0.0://g' | sed 's/->.*//g')
+}
+
+function detectDatabaseType() {
+    local ENV_SETTINGS
+    ENV_SETTINGS=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{println $value}}{{end}}' "${CONTAINER_ID}")
+
+    local ENV_SPLIT
+    # shellcheck disable=SC2206
+    IFS=$'\n' ENV_SPLIT=($ENV_SETTINGS)
+
+    local KEY
+    for VALUE in "${ENV_SPLIT[@]}"
+    do
+        KEY=$(echo "${VALUE}" | cut -d '=' -f1)
+
+        if [[ "${KEY}" = "MYSQL_DATABASE" ]]; then
+            DB_TYPE=mysql
+            DB_DATABASE=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^MYSQL_DATABASE/ {print $2}')
+            DB_USER=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^MYSQL_USER/ {print $2}')
+            DB_PASSWORD=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^MYSQL_PASSWORD/ {print $2}')
+            return
+        fi
+
+        if [[ "${KEY}" = "POSTGRES_DB" ]]; then
+            DB_TYPE=postgresql
+            DB_DATABASE=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^POSTGRES_DB/ {print $2}')
+            DB_USER=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^POSTGRES_USER/ {print $2}')
+            DB_PASSWORD=$(echo "${ENV_SETTINGS}" | awk -F'=' '/^POSTGRES_PASSWORD/ {print $2}')
+            return
+        fi
+    done
+}
+
+detectDBeaver
+
+DB_SERVICE=${1:-db}
+getContainerId
+detectContainerPort
+detectDatabaseType
+
+if [[ -z "${DB_TYPE}" ]]; then
+    error "Error: Unable to detect database engine used inside the db container."
+    exit 1
+fi
+
+if [[ -z "${CONTAINER_PORT}" ]]; then
+    error "Error: Unable to detect database mapped port."
+    exit 1
+fi
+
+CONNECTION="driver=${DB_TYPE}|host=localhost|database=${DB_DATABASE:-default}|name=${COMPOSE_PROJECT_NAME}|port=${CONTAINER_PORT}|user=${DB_USER:-user}|password=${DB_PASSWORD:-user}|openConsole=true|connect=true|create=false"
+${DBEAVER} -con "${CONNECTION}" > /dev/null 2>&1 &
