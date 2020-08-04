@@ -16,6 +16,7 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [artisan](artisan) | Runs [Laravel's Artisan](https://laravel.com/docs/artisan) command in `cli`. **Requires** artisan pre-installed inside `cli`. | Laravel, Artisan |
 |   [blt](blt) | Acquia BLT tool launcher (requires [BLT installation](https://blog.docksal.io/docksal-and-acquia-blt-1552540a3b9f)) | Drupal |
 |   [codeclimate](codeclimate) | [CodeClimate](https://codeclimate.com/) code quality tool | |
+|   [dbeaver](dbeaver) | Launches [DBeaver](https://dbeaver.io/) with the connection information for current project. | macOS, Linux |
 |   [mailhog](mailhog) | [Mailhog](https://github.com/mailhog/MailHog) e-mail capture service for current project |  |
 |   [mkcert](mkcert) | [mkcert](https://github.com/FiloSottile/mkcert) addon for Docksal |  |
 |   [phpcs](phpcs) | PHP Code Sniffer and Code Beautifier | |
