@@ -28,7 +28,7 @@ fi
 if [[ -f "${PROJECT_ROOT}/${DOCROOT}/sites/default/settings.php" ]] || [[ -f "${PROJECT_ROOT}/${DOCROOT}/sites/default/default.settings.php" ]]; then
   STANDARDS="${STANDARDS:-"Drupal,DrupalPractice"}"
   EXTENSIONS="${EXTENSIONS:-"php,module,inc,install,test,profile,theme,css,info,txt,md"}";
-elif [[ -f "${PROJECT_ROOT}/${DOCROOT}/wp-config" ]]; then
+elif [[ -f "${PROJECT_ROOT}/${DOCROOT}/wp-config.php" ]]; then
   STANDARDS="${STANDARDS:-"WordPress"}"
   EXTENSIONS="${EXTENSIONS:-"php"}"
 fi

@@ -10,7 +10,7 @@ fin addon install adminer
 
 ## URL
 
-After the installation Adminer will be available at `http://adminer.<project_name>.docksal`
+After the installation using the default `*.docksal` domain name, Adminer will be available at `http://adminer-<project_name>.docksal`.
 
 ## Command line reference
 
@@ -27,3 +27,6 @@ You can customize your adminer installation with the following environmental var
   * To load [Adminer plugins](https://github.com/vrana/adminer/tree/master/plugins) you can pass a list of filenames. 
 * `ADMINER_DESIGN=price`
   * To use a bundled [Adminer design](https://github.com/vrana/adminer/tree/master/designs) you can pass its name. 
+
+## Regressions
+ Previously the url for Adminer could be found at `http://adminer.<project_name>.docksal`. This change was made to make it easier to use a LetsEncrypt wildcard certificate, as it is only valid for one level of subdomains.

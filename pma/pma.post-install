@@ -2,4 +2,4 @@
 
 fin pma enable
 
-echo -e "${green}PHPMyAdmin UI:${NC} http://pma.$VIRTUAL_HOST"
+echo -e "${green}PHPMyAdmin UI:${NC} http://pma-$VIRTUAL_HOST"

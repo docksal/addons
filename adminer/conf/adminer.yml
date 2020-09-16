@@ -7,4 +7,4 @@
       - ADMINER_PLUGINS=tables-filter tinymce # To load Adminer plugins
       - ADMINER_DESIGN=price # To use a bundled Adminer design
     labels:
-      - io.docksal.virtual-host=adminer.${VIRTUAL_HOST}
+      - io.docksal.virtual-host=adminer-${VIRTUAL_HOST}
