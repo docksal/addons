@@ -23,6 +23,7 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [phpunit](phpunit) | Creates a phpunit.xml file and runs PHPUnit tests | Drupal |
 |   [pma](pma) | [PhpMyAdmin](https://www.phpmyadmin.net/) database management tool | MySQL |
 |   [redis](redis) | Add [Redis](https://redis.io/) to current project |  |
+|   [sequelace](sequelace) | Launches [SequelAce](https://www.equel-ace.com) with the connection information for current project. (community fork of SequelPro) | macOS |
 |   [sequelpro](sequelpro) | Launches [SequelPro](https://www.sequelpro.com) with the connection information for current project. | macOS |
 |   [simpletest](simpletest) | Runs SimpleTest tests in Drupal 7 and 8 | Drupal |
 |   [solr](solr) | [Apache Solr](http://lucene.apache.org/solr/) search service for current project |  |
