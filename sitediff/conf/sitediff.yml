@@ -1,0 +1,13 @@
+  # Sitediff
+  sitediff:
+    hostname: sitediff
+    image: evolvingweb/sitediff
+    ports:
+      - 13080
+    volumes:
+      - ${PROJECT_ROOT}/sitediff:/app/sitediff:cached
+    command: tail -f /dev/null
+    labels:
+      - io.docksal.virtual-host=sitediff.${VIRTUAL_HOST},sitediff.${VIRTUAL_HOST}.*
+      - io.docksal.virtual-port=13080
+      - io.docksal.cert-name=${VIRTUAL_HOST_CERT_NAME:-none}
