@@ -92,7 +92,6 @@ yml_remove_service ()
 
 #-------------------------------------- SITEDIFF functions ---------------------------------------------
 
-# Set/remove proper setting into php.ini
 # $1 - enable/disable
 # Enable container and settings
 sitediff_enable ()
@@ -106,8 +105,6 @@ sitediff_enable ()
 	yml_prepare
 	# Add sitediff service to docksal.yml
 	yml_add_service "$SITEDIFF_YML"
-	# Apply stack changes.
-	fin stop cli
 	fin up
 }
 
@@ -129,8 +126,6 @@ sitediff_disable ()
 	yml_install_tools
 	# Remove sitediff service from docksal.yml
 	yml_remove_service "sitediff"
-	# Apply stack changes
-	COMPOSE_FILE="" fin stop cli
 	fin up
 }
 
