@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+fin sitediff enable
+
+echo -e "${green}Sitediff UI:${NC} http://sitediff.$VIRTUAL_HOST"

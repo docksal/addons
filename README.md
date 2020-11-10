@@ -25,6 +25,7 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [redis](redis) | Add [Redis](https://redis.io/) to current project |  |
 |   [sequelpro](sequelpro) | Launches [SequelPro](https://www.sequelpro.com) with the connection information for current project. | macOS |
 |   [simpletest](simpletest) | Runs SimpleTest tests in Drupal 7 and 8 | Drupal |
+|   [sitediff](sitediff) | Runs Sitediff tests in your Docksal project | |
 |   [solr](solr) | [Apache Solr](http://lucene.apache.org/solr/) search service for current project |  |
 |   [tableplus](tableplus) | Launches [TablePlus](https://www.tableplus.com) with the connection information for current project. | macOS |
 |   [uli](uli) | Generate one time login url for current site | Drupal |
