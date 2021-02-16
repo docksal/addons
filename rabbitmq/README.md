@@ -13,7 +13,7 @@ fin addon install rabbitmq
 
 ## Host and Port
 
-From within your project the rabbitmq service will be availabel at `rabbitmq:5672`
+From within your project, the rabbitmq service will be available at `rabbitmq:5672`
 
 ## URL
 
