@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+fin rabbitmq enable
+
+echo -e "${green}RabbitMQ Management:${NC} http://rabbitmq-$VIRTUAL_HOST"

@@ -1,0 +1,10 @@
+  # rabbitMQ
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3-management
+    labels:
+      - io.docksal.virtual-host=rabbitmq-${VIRTUAL_HOST}
+      - io.docksal.virtual-port=15672
+    dns:
+      - ${DOCKSAL_DNS1}
+      - ${DOCKSAL_DNS2}
