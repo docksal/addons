@@ -129,7 +129,7 @@ if [[ "$(mkcert --version 2>&1)" != "v${REQUIREMENTS_MKCERT}" ]]; then
 	fi
 
 	echo-green "[PRE-INSTALL] INFO: Initializing mkcert"
-	sudo mkcert -install
+	mkcert -install
 
 	mkdir -p "${CONFIG_CERTS}"
 else
