@@ -1,0 +1,7 @@
+# Hooks
+rabbitmq.pre-install
+rabbitmq.post-install
+rabbitmq.pre-uninstall
+
+# Container config
+conf/rabbitmq.yml

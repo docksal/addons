@@ -15,34 +15,6 @@ error() {
     echo -e "\033[1;31m${1}\033[0m"
 }
 
-function detectDBeaver() {
-    local OS
-    OS=$(uname | tr '[:upper:]' '[:lower:]')
-    case $OS in
-        linux*)
-            DBEAVER=$(command -v dbeaver)
-            ;;
-        darwin*)
-            DBEAVER="$(osascript -e 'POSIX path of (path to application "DBeaver")')Contents/MacOS/dbeaver"
-            ;;
-        *)
-            echo "Unknown system: ${OS} is currently not supported!"
-            exit 1
-            ;;
-    esac
-
-    if [[ ! -f "${DBEAVER}" ]]; then
-        error "Error: DBeaver is not installed."
-        if [[ "${OS}" == darwin* ]]; then
-            echo
-            echo "Install DBeaver with brew:"
-            echo
-            echo "  brew cask install dbeaver-community"
-        fi
-        exit 1
-    fi
-}
-
 function getContainerId() {
     CONTAINER_ID=$(docker ps --all --filter "label=com.docker.compose.service=${DB_SERVICE}" --filter "label=com.docker.compose.project=${COMPOSE_PROJECT_NAME_SAFE}" --format '{{.ID}}')
     if [ -z "${CONTAINER_ID}" ]; then
@@ -86,7 +58,31 @@ function detectDatabaseType() {
     done
 }
 
-detectDBeaver
+function startDBeaver() {
+    local OS
+    OS=$(uname | tr '[:upper:]' '[:lower:]')
+    case $OS in
+        linux*)
+            startLinux
+            ;;
+        darwin*)
+            startDarwin
+            ;;
+        *)
+            echo "Unknown system: ${OS} is currently not supported!"
+            exit 1
+            ;;
+    esac
+}
+
+function startLinux() {
+    command -v dbeaver >/dev/null || { error "dbeaver command not found."; exit 1; }
+    dbeaver -con "${CONNECTION}" > /dev/null 2>&1 &
+}
+
+function startDarwin() {
+    open -a DBeaver --args -con "${CONNECTION}"
+}
 
 DB_SERVICE=${1:-db}
 getContainerId
@@ -104,4 +100,5 @@ if [[ -z "${CONTAINER_PORT}" ]]; then
 fi
 
 CONNECTION="driver=${DB_TYPE}|host=localhost|database=${DB_DATABASE:-default}|name=${COMPOSE_PROJECT_NAME}|port=${CONTAINER_PORT}|user=${DB_USER:-user}|password=${DB_PASSWORD:-user}|openConsole=true|connect=true|create=false"
-${DBEAVER} -con "${CONNECTION}" > /dev/null 2>&1 &
+
+startDBeaver
