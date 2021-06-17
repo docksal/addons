@@ -18,13 +18,13 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [codeclimate](codeclimate) | [CodeClimate](https://codeclimate.com/) code quality tool | |
 |   [dbeaver](dbeaver) | Launches [DBeaver](https://dbeaver.io/) with the connection information for current project. | macOS, Linux |
 |   [mailhog](mailhog) | [Mailhog](https://github.com/mailhog/MailHog) e-mail capture service for current project |  |
+|   [meilisearch](meilisearch) | [Meilisearch](https://www.meilisearch.com/) search for local development | |
 |   [mkcert](mkcert) | [mkcert](https://github.com/FiloSottile/mkcert) addon for Docksal |  |
 |   [phpcs](phpcs) | PHP Code Sniffer and Code Beautifier | |
 |   [phpunit](phpunit) | Creates a phpunit.xml file and runs PHPUnit tests | Drupal |
 |   [pma](pma) | [PhpMyAdmin](https://www.phpmyadmin.net/) database management tool | MySQL |
 |   [rabbitmq](rabbitmq) | [RabbitMQ](https://www.rabbitmq.com/) Message Broker | RabbitMQ |
 |   [redis](redis) | Add [Redis](https://redis.io/) to current project |  |
-|   [sequelace](sequelace) | Launches [SequelAce](https://www.equel-ace.com) with the connection information for current project. (community fork of SequelPro) | macOS |
 |   [sequelpro](sequelpro) | Launches [SequelPro](https://www.sequelpro.com) with the connection information for current project. | macOS |
 |   [simpletest](simpletest) | Runs SimpleTest tests in Drupal 7 and 8 | Drupal |
 |   [sitediff](sitediff) | Runs Sitediff tests in your Docksal project | |
