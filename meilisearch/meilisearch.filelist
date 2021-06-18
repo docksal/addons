@@ -1,0 +1,8 @@
+# Hooks
+meilisearch.pre-install
+meilisearch.post-install
+meilisearch.pre-uninstall
+
+# Container config
+conf/meilisearch.yml
+

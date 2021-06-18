@@ -1,0 +1,11 @@
+# Meilisearch
+  meilisearch:
+    hostname: meilisearch
+    image: getmeili/meilisearch
+    labels:
+      - io.docksal.virtual-host=meilisearch.${VIRTUAL_HOST}
+    ports:
+      - "${MEILISEARCH_PORT_MAPPING:-7700}"
+    volumes:
+      - project_root:/var/www:ro,nocopy,cached # Project root volume (read-only)
+      - db_data:/data.ms # Database data volume
