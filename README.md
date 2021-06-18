@@ -24,6 +24,7 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [pma](pma) | [PhpMyAdmin](https://www.phpmyadmin.net/) database management tool | MySQL |
 |   [rabbitmq](rabbitmq) | [RabbitMQ](https://www.rabbitmq.com/) Message Broker | RabbitMQ |
 |   [redis](redis) | Add [Redis](https://redis.io/) to current project |  |
+|   [sequelace](sequelace) | Launches [SequelAce](https://github.com/Sequel-Ace/Sequel-Ace) with the connection information for current project. | macOS |
 |   [sequelpro](sequelpro) | Launches [SequelPro](https://www.sequelpro.com) with the connection information for current project. | macOS |
 |   [simpletest](simpletest) | Runs SimpleTest tests in Drupal 7 and 8 | Drupal |
 |   [sitediff](sitediff) | Runs Sitediff tests in your Docksal project | |
