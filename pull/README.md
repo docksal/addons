@@ -1,7 +1,6 @@
 # Remote Provider Pull
 
-The `pull` addon was recently a core command but has been pulled out due as it is sometimes 
-quicker to get updates to just the addon as opposed to the whole platform.
+The `pull` addon was recently a core command but has moved to an addon command.
 
 `fin pull` command allows you to easily bring your assets: db, files, and code from your hosting environment
 down to your local environment without manually running through the steps.
@@ -16,11 +15,11 @@ fin addon install --global pull
 
 ### Acquia
 
-To interact with Acquia through Drush, the `SECRET_ACQUIA_CLI_SECRET` and
+To interact with Acquia through the Acquia CLI, the `SECRET_ACQUIA_CLI_SECRET` and
 `SECRET_ACQUIA_CLI_KEY` are required. Additionally, access to the Acquia Cloud API
 is required. If access is not allowed, fallback to using the [Drush](https://docs.docksal.io/fin/fin-pull/#drupal-drush) method.
 
-More information on working with [Docksal with Acquia Drush](https://docs.docksal.io/tools/acquia-drush).
+More information on working with [Acquia CLI in Docksal](https://docs.docksal.io/tools/acquia-drush).
 
 ### Pantheon
 
@@ -28,7 +27,7 @@ Interacting with Pantheon requires that the `SECRET_TERMINUS_TOKEN`
 is set. More information on [generating tokens](https://pantheon.io/docs/machine-tokens/)
 can be found in Pantheon's documentation.
 
-More information on working with [Docksal with Pantheon](https://docs.docksal.io/tools/terminus).
+More information on working with [Pantheon in Docksal](https://docs.docksal.io/tools/terminus).
 
 ### Platform.sh
 
@@ -36,7 +35,7 @@ Interacting with Platform.sh requires that the `SECRET_PLATFORMSH_CLI_TOKEN`
 is set. For more information on [creating CLI tokens](https://docs.platform.sh/gettingstarted/cli/api-tokens.html)
 for use with the Platform.sh CLI tool, consult with Platform's documentation.
 
-More information on working with [Docksal with Platform.sh](https://docs.docksal.io/tools/platformsh).
+More information on working with [Platform.sh in Docksal](https://docs.docksal.io/tools/platformsh).
 
 ### Drupal / Drush
 
@@ -84,7 +83,7 @@ Example of what `wp-cli.yml` would look like:
   url: http://example.com
 ```
 
-More information on working with [Docksal and WP-CLI](https://docs.docksal.io/tools/wp-cli).
+More information on working with [WP-CLI in Docksal](https://docs.docksal.io/tools/wp-cli).
 
 ## Initializing Project
 
