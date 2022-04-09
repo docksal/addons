@@ -23,6 +23,7 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [phpcs](phpcs) | PHP Code Sniffer and Code Beautifier | |
 |   [phpunit](phpunit) | Creates a phpunit.xml file and runs PHPUnit tests | Drupal |
 |   [pma](pma) | [PhpMyAdmin](https://www.phpmyadmin.net/) database management tool | MySQL |
+|   [pull](pull) | Pull assets from hosting environment to local | Drupal |
 |   [rabbitmq](rabbitmq) | [RabbitMQ](https://www.rabbitmq.com/) Message Broker | RabbitMQ |
 |   [redis](redis) | Add [Redis](https://redis.io/) to current project |  |
 |   [sequelace](sequelace) | Launches [SequelAce](https://github.com/Sequel-Ace/Sequel-Ace) with the connection information for current project. | macOS |
