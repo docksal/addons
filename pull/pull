@@ -189,10 +189,15 @@ provider_pull_db ()
 
 	echo-green "Pulling DB"
 
-	# Variables to set for local use.
-	local __db_user="${dbuser:-root}"
-	local __db_password="${dbpass:-root}"
-	local __db_database="${dbname:-default}"
+	# Get database environment variables.
+  	DB_USER=${MYSQL_USER:-root}
+  	DB_PASS=${MYSQL_PASSWORD:-root}
+  	DB_NAME=${MYSQL_DATABASE:-default}
+
+  	# Variables to set for local use.
+  	local __db_user="${dbuser:-${DB_USER}}"
+  	local __db_password="${dbpass:-${DB_PASS}}"
+  	local __db_database="${dbname:-${DB_NAME}}"
 
 	# Set the db file that will be stored within the cli container
 	local db_file="/tmp/${__db_database}.${hostingenv}.${hostingsite}.sql.gz"
