@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+## Turn Xdebug on or off
+##
+## Usage: fin xdebug [on|off]
+
+set -e
+
+case $1 in
+
+    on)
+        fin config set --env=local XDEBUG_ENABLED=1
+        fin up
+        ;;
+    off)
+        fin config set --env=local XDEBUG_ENABLED=0
+        fin up
+        ;;
+    *)
+        echo "Please tell me 'on' or 'off'."
+esac
+
+echo "Set xdebug to $1"
