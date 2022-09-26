@@ -2,38 +2,48 @@
 
 #: exec_target = cli
 
-## Install wkhtmltopdf to your current cli, installs a base compiled version along with fonts and xvfb for x server 
-## rendering
+## Install wkhtmltopdf inside project's cli container.
+## Installs the base compiled version along with fonts and Xvfb for X Server rendering.
 ##
-## Usage: fin wkhtmltopdf install | version 
+## Usage: fin wkhtmltopdf install | version
+
+_install ()
+{
+	# Steps below follow the Dockerfile RUN format used in Docksal images.
+	# This makes it simpler to copy and paste them into a custom Dockerfile.
+	set -xe; \
+	sudo apt-get update; \
+	sudo apt-get -y --no-install-recommends install \
+		libxrender1 \
+		libfontconfig1 \
+		libx11-dev \
+		libjpeg62 \
+		libxtst6 \
+		fontconfig \
+		ttf-mscorefonts-installer \
+		xauth \
+		xfonts-75dpi \
+		xvfb \
+	; \
+	# wkhtmltopdf binary (wkhtmltopdfx)
+	curl -fL# "https://github.com/SilvertipSoftware/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true" -o /tmp/wkhtmltopdfx; \
+	sudo install /tmp/wkhtmltopdfx /usr/local/bin/wkhtmltopdfx; \
+	# wkhtmltopdf wrapper script (wkhtmltopdf)
+	echo 'xvfb-run -a -s "-screen 0 1024x768x16" wkhtmltopdfx "$@"' | tee /tmp/wkhtmltopdf; \
+	sudo install /tmp/wkhtmltopdf /usr/local/bin/wkhtmltopdf; \
+	wkhtmltopdf -V
+}
 
 case "$1" in
 	install)
-		sudo apt-get install -y \
-    libxrender1 \
-    libfontconfig1 \
-    libx11-dev \
-    libjpeg62 \
-    libxtst6 \
-    fontconfig \
-    ttf-mscorefonts-installer \
-    xfonts-75dpi \
-    xvfb \
-    wget \
-    && sudo wget https://github.com/SilvertipSoftware/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdfx \
-    && sudo chmod +x /usr/local/bin/wkhtmltopdfx
-    sudo touch /usr/local/bin/wkhtmltopdf
-    echo 'xvfb-run -a -s "-screen 0 1024x768x16" wkhtmltopdfx "$@"' | sudo tee -a /usr/local/bin/wkhtmltopdf
-    sudo chmod a+x /usr/local/bin/wkhtmltopdf
-    wkhtmltopdf -V
-
+		_install
 		;;
 	version|-v)
 		wkhtmltopdf -V
 		;;
 	*)
 		echo "Install wkhtmltopdf to your current cli"
-        echo " "
-        echo "Usage: fin wkhtmltopdf install | version "
+		echo " "
+		echo "Usage: fin wkhtmltopdf install | version "
 		;;
 esac
