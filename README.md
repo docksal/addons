@@ -34,3 +34,4 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 |   [tableplus](tableplus) | Launches [TablePlus](https://www.tableplus.com) with the connection information for current project. | macOS |
 |   [uli](uli) | Generate one time login url for current site | Drupal |
 |   [wkhtmltopdf](wkhtmltopdf) | Installs wkhtmltopdf 0.12.5 with QT compiled in. |  |
+|   [xdebug](xdebug) | Turns [xdebug](https://docs.docksal.io/tools/xdebug/) on or off and restarts docksal |  |
