@@ -1,0 +1,8 @@
+# Hooks
+socketi.pre-install
+socketi.post-install
+socketi.pre-uninstall
+
+# Container config
+conf/socketi.yml
+
