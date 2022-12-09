@@ -16,7 +16,7 @@ case $1 in
         fin up
         ;;
     *)
-        echo "Please tell me 'on' or 'off'."
+        echo "Usage: fin xdebug <on|off>"
 esac
 
 echo "Set xdebug to $1"
