@@ -182,6 +182,7 @@ importing the data.
   --db-name=<dbname>             Specify the DB Name to import into. (Defaults to default)
   --force                       Force a new database file to be pulled
   --remote-db=<remote_db>       Specify the remote DB name to pull. (Used with Acquia)
+  --progress                    Show import progress
 ```
 
 __NOTICE__
@@ -263,6 +264,7 @@ fin help pull
   --db-name=<dbname>                Specify the DB Name to import into. (Defaults to default)
   --force                           Generate and pull a new db dump, rather than using locally cached in /tmp
   --remote-db=<remotedb>            Specify the remote DB name to pull. (Used with Acquia)
+  --progress                        Show import progress
 
  Extra Options for Files
   --rsync-options=<options>         Rsync Options to append.
