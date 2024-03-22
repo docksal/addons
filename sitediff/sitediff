@@ -113,7 +113,7 @@ sitediff_disable ()
 {
 	echo "  Running checks..."
 	# Make sure cli container is running
-	if ! (fin ps | grep "_cli_" | grep "running" >/dev/null); then
+	if ! (fin ps | grep "_cli_" | grep "Up" >/dev/null); then
 		echo "  ERROR: Start the project with fin start first" && exit 1
 	fi
 
