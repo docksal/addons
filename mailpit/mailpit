@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-## Enable/disable mailhog for current project
+## Enable/disable mailpit for current project
 ##
 ## Sub-commands:
-##   enable		Enable mailhog
-##   disable	Disable mailhog
+##   enable		Enable mailpit
+##   disable	Disable mailpit
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -22,9 +22,7 @@ DOCKSAL_YML=".docksal/docksal.yml"
 DOCKSAL_YML_NEW=".docksal/docksal.yml.new"
 DOCKSAL_ENV=".docksal/docksal.env"
 DOCKSAL_STACKS="$HOME/.docksal/stacks"
-PHP_INI=".docksal/etc/php/php.ini"
-MAILHOG_INI="$ADDON_ROOT/conf/mailhog.ini"
-MAILHOG_YML="$ADDON_ROOT/conf/mailhog.yml"
+MAILPIT_YML="$ADDON_ROOT/conf/mailpit.yml"
 
 #----------------------------------- YML & config functions ------------------------------------------
 
@@ -92,56 +90,28 @@ yml_remove_service ()
 	fin exec "$CODE_TO_EXEC"
 }
 
-#-------------------------------------- MailHog functions ---------------------------------------------
+#-------------------------------------- mailpit functions ---------------------------------------------
 
-# Set/remove proper setting into php.ini
-# $1 - enable/disable
-mailhog_php_support ()
-{
-	case "$1" in
-		enable)
-			# Create file if not exists
-			if [[ ! -f "$PHP_INI" ]]; then
-				mkdir -p $(dirname "$PHP_INI")
-				echo -e "[php]\n" > "$PHP_INI"
-			fi
-			# Append sendmail setting
-			cat "$MAILHOG_INI" >> "$PHP_INI"
-			# Remove double empty lines for clarity
-			cat -s "$PHP_INI" | tee "$PHP_INI" >/dev/null
-			;;
-		disable)
-			[[ ! -f "$PHP_INI" ]] && return
-			php_ini_contents=$(cat "$PHP_INI")
-			mailhog_ini_contents=$(cat "$MAILHOG_INI")
-			# Remove all lines that present in mailhog.ini from php.ini
-			php_ini_contents=${php_ini_contents/$mailhog_ini_contents/}
-			echo -e "$php_ini_contents" > "$PHP_INI"
-			;;
-	esac
-}
 
 # Enable container and settings
-mailhog_enable ()
+MAILPIT_enable ()
 {
-	# Check that mailhog is not already enabled
-	if (in_config "image: mailhog\/mailhog"); then
-		echo "  Mailhog support is already enabled." && exit
+	# Check that mailpit is not already enabled
+	if (in_config "image: axllent\/mailpit"); then
+		echo "  Mailpit support is already enabled." && exit
 	fi
 
-	echo "  Enabling mailhog..."
+	echo "  Enabling mailpit..."
 	yml_prepare
-	# Add mailhog service to docksal.yml
-	yml_add_service "$MAILHOG_YML"
-	# Add php.ini setting
-	mailhog_php_support enable
+	# Add mailpit service to docksal.yml
+	yml_add_service "$MAILPIT_YML"
 	# Apply stack changes.
 	fin stop cli
 	fin up
 }
 
 # Disable container and settings
-mailhog_disable ()
+MAILPIT_disable ()
 {
 	echo "  Running checks..."
 	# Make sure cli container is running
@@ -149,17 +119,15 @@ mailhog_disable ()
 		echo "  ERROR: Start the project with fin start first" && exit 1
 	fi
 
-	# Make sure mailhog is installed
-	if ! in_config "image: mailhog\/mailhog"; then
-		echo "  Mailhog support is not enabled at the moment." && exit
+	# Make sure mailpit is installed
+	if ! in_config "image: axllent\/mailpit"; then
+		echo "  Mailpit support is not enabled at the moment." && exit
 	fi
 
-	echo "  Preparing to remove mailhog service..."
+	echo "  Preparing to remove mailpit service..."
 	yml_install_tools
-	# Remove mailhog service from docksal.yml
+	# Remove mailpit service from docksal.yml
 	yml_remove_service "mail"
-	# Remove php.ini setting
-	mailhog_php_support disable
 	# Apply stack changes
 	COMPOSE_FILE="" fin stop cli
 	fin up
@@ -171,13 +139,13 @@ cd "$PROJECT_ROOT"
 
 case "$1" in
 	enable)
-		mailhog_enable
+		MAILPIT_enable
 		;;
 	disable)
-		mailhog_disable
+		MAILPIT_disable
 		;;
 	*)
-		echo "Usage: fin mailhog <enable|disable>"
+		echo "Usage: fin mailpit <enable|disable>"
 		exit 1
 		;;
 esac
