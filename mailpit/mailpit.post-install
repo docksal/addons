@@ -3,4 +3,4 @@
 fin mailpit enable
 
 echo -e "${green}Mailpit UI:${NC} http://mail.<project_name>.docksal"
-echo -e "${green}More documentation:${NC} http://docs.docksal.io/en/master/tools/mailpit/"
+echo -e "${green}More documentation:${NC} https://docs.docksal.io/service/other/mailpit/"

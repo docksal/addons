@@ -94,7 +94,7 @@ yml_remove_service ()
 
 
 # Enable container and settings
-MAILPIT_enable ()
+mailpit_enable ()
 {
 	# Check that mailpit is not already enabled
 	if (in_config "image: axllent\/mailpit"); then
@@ -111,7 +111,7 @@ MAILPIT_enable ()
 }
 
 # Disable container and settings
-MAILPIT_disable ()
+mailpit_disable ()
 {
 	echo "  Running checks..."
 	# Make sure cli container is running
@@ -139,10 +139,10 @@ cd "$PROJECT_ROOT"
 
 case "$1" in
 	enable)
-		MAILPIT_enable
+		mailpit_enable
 		;;
 	disable)
-		MAILPIT_disable
+		mailpit_disable
 		;;
 	*)
 		echo "Usage: fin mailpit <enable|disable>"
