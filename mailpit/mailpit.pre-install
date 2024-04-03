@@ -8,7 +8,7 @@ fi
 
 # Check Docksal running
 if [[ "$ADDON_GLOBAL" == "true" ]]; then
-	echo -e "[PRE-INSTALL] ERROR: Mailhog addon should not be installed globally"
+	echo -e "[PRE-INSTALL] ERROR: Mailpit addon should not be installed globally"
 	exit 1
 fi
 
@@ -26,13 +26,13 @@ if [[ $? != 0 ]]; then
 	exit 1
 fi
 
-# Check there is no mailhog already
-if (echo "$fin_config" | grep "image: mailhog\/mailhog"); then
-	echo "[PRE-INSTALL] ERROR: Mailhog seems to be already enabled for this project"
+# Check there is no mailpit already
+if (echo "$fin_config" | grep "image: axllent\/mailpit"); then
+	echo "[PRE-INSTALL] ERROR: Mailpit seems to be already enabled for this project"
 	exit 1
 fi
 
-# Check there is no mailhog already
+# Check there is no mailpit already
 if (echo "$fin_config" | grep "  mail:"); then
 	echo "[PRE-INSTALL] ERROR: Container named 'mail' already exists. Remove it to continue."
 	exit 1

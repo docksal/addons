@@ -1,0 +1,7 @@
+# Hooks
+mailpit.pre-install
+mailpit.post-install
+mailpit.pre-uninstall
+
+# Container config
+conf/mailpit.yml
