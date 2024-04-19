@@ -8,16 +8,16 @@ DISCLAMER: since it is a community driven project it is only smoke-tested and co
 
 # Addons list
 
-| Name	                      |  Description 	|  Requirements 	|
-|----------------------------|--- |--- |
-| **[example](example)**	    |  A working documentation on what is Docksal addon and how it works 	|  |
+| Name	                     |  Description  |  Requirements 	 |
+|----------------------------|---------------|-----------------|
+| **[example](example)**	   |  A working documentation on what is Docksal addon and how it works 	|  |
 | [adminer](adminer)         | [Adminer](https://www.adminer.org/) database management tool | MySQL |
 | [andock](andock)           | [Andock](https://andock.readthedocs.io/en/latest/) makes it dead simple to get Docksal environments up on your server. | Docksal |
 | [artisan](artisan)         | Runs [Laravel's Artisan](https://laravel.com/docs/artisan) command in `cli`. **Requires** artisan pre-installed inside `cli`. | Laravel, Artisan |
 | [blt](blt)                 | Acquia BLT tool launcher (requires [BLT installation](https://blog.docksal.io/docksal-and-acquia-blt-1552540a3b9f)) | Drupal |
 | [codeclimate](codeclimate) | [CodeClimate](https://codeclimate.com/) code quality tool | |
 | [dbeaver](dbeaver)         | Launches [DBeaver](https://dbeaver.io/) with the connection information for current project. | macOS, Linux |
-| [mailpit](mailpit)         | [Mailhog](https://github.com/axllent/mailpit) email capture service for current project |  |
+| [mailpit](mailpit)         | [Mailpit](https://github.com/axllent/mailpit) email capture service for current project |  |
 | [meilisearch](meilisearch) | [Meilisearch](https://www.meilisearch.com/) search for local development | |
 | [mkcert](mkcert)           | [mkcert](https://github.com/FiloSottile/mkcert) addon for Docksal |  |
 | [phpcs](phpcs)             | PHP Code Sniffer and Code Beautifier | |
